@@ -1,0 +1,26 @@
+# pip install Flask
+from flask import Flask
+
+app = Flask(__name__)
+
+
+# http://127.0.0.1:5000
+@app.route("/")
+def index():
+    return "Hello World"
+
+
+# http://127.0.0.1:5000/about
+@app.route("/about")
+def about():
+    a = 10
+    b = 1
+    return "<h1>We are programers<h1>"
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+# port standartowy 5000
+# we flasku nie istnieje OpenAPI -> http://127.0.0.1:5000/docs
+# 127.0.0.1 - - [17/Jan/2026 13:47:18] "GET /docs HTTP/1.1" 404 -
+# 404 - brak strony
