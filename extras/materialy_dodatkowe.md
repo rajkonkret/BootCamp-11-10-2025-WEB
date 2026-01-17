@@ -26,3 +26,9 @@ Aby strona poprawnie wyświetlała się przy zmianie szerokości okna
 
 Paleta kolorów rgb\
 https://doneta.pl/blog/paleta-kolorow-rgb/
+
+https://cssgridgarden.com/#pl
+https://flexboxfroggy.com/#pl
+https://flukeout.github.io/
+https://edabit.com/challenges
+https://www.robertorlinski.pl/artykuly/10-gier-pomagajacych-w-nauce-jsa-i-cssa
