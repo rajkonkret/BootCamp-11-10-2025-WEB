@@ -15,7 +15,8 @@ def index():
 def about():
     a = 10
     b = 1
-    return "<h1>We are programers<h1>"
+    # return "<h1>We are programers<h1>"
+    return f"<h1>We are programers {a / b} <h1>"
 
 
 if __name__ == '__main__':
