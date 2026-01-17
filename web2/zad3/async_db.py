@@ -20,3 +20,6 @@ async def add_task(title: str):
 
 
 async def get_tasks():
+    async with aiosqlite.connect(DB_FILE) as db:
+        cursor = await db.execute("SELECT id, title FROM tasks;")
+        return await cursor.fetchall()
