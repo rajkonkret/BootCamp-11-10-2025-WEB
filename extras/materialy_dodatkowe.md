@@ -1,3 +1,15 @@
+<b> - Bold text
+<strong> - Important text
+<i> - Italic text
+<em> - Emphasized text
+<mark> - Marked text
+<small> - Smaller text
+<del> - Deleted text
+<ins> - Inserted text
+<sub> - Subscript text
+<sup> - Superscript text
+
+
 Hierarchia selektorów (od najmniejszego do największego priorytetu):
  1. Elementy (np. div, p) → najmniej specyficzne.
  2. Klasy (np. .example) → średni priorytet.
