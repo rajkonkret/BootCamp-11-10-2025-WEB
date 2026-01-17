@@ -17,3 +17,6 @@ async def add_task(title: str):
     async with aiosqlite.connect(DB_FILE) as db:
         await db.execute("INSERT INTO tasks (title) VALUES (?);", (title,))
         await db.commit()
+
+
+async def get_tasks():
