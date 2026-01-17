@@ -6,6 +6,8 @@ app = Flask(__name__)
 # http://127.0.0.1:5000
 # http://127.0.0.1:5000/?color=blue
 # http://127.0.0.1:5000/?color=blue&style=italic
+# http://127.0.0.1:5000/?color=blue&style=italic">Hacked<
+# http://127.0.0.1:5000/?color=blue&style=italic%22%3EHacked%3C
 @app.route("/")
 def index():
     # b'color=blue'
