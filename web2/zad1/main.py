@@ -24,6 +24,7 @@ if __name__ == '__main__':
     )
 # http://0.0.0.0:8000
 # localhost:8000
+# http://127.0.0.1:8000/docs
 # Dokumentacja OpenAPI - Swagger
 # http://0.0.0.0:8000/docs
 # postman
