@@ -16,8 +16,8 @@ def index():
     menu = f"""
     Add new <a href="">offer</a><br>
     Add Audi 10000 go <a href="{url_for('offer', brand="Audi", price=10000)}">here</a><br>
-    <img src="{url_for('static', filename='1.svg')}" alt="1.svg" alt="Sample"><br>
-    <img src="{url_for('static', filename='cars/audi.svg')}" alt="1.svg" alt="Audi"><br>
+    <img src="{url_for('static', filename='1.svg')}"  alt="Sample"><br>
+    <img src="{url_for('static', filename='cars/audi.svg')}"  alt="Audi"><br>
     {url_for('static', filename='cars/audi.svg')}<br>
     {os.path.join(app.static_folder, 'cars/audi.svg')}
     """
