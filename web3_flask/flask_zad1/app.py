@@ -18,6 +18,7 @@ def about():
     # return "<h1>We are programers<h1>"
     return f"<h1>We are programers {a / b} <h1>"
 
+
 # http://127.0.0.1:5001/error - zmieniony port
 @app.route("/error")
 def error():
@@ -25,6 +26,21 @@ def error():
     b = 0
     # return "<h1>We are programers<h1>"
     return f"<h1>We are programers {a / b} <h1>"
+
+
+# http://127.0.0.1:5001/cantor/usd/1345
+# http://127.0.0.1:5001/cantor/usd/stopiećdziesiąt
+# 127.0.0.1 - - [17/Jan/2026 14:02:04] "GET /cantor/usd/stopiećdziesiąt HTTP/1.1" 404 -
+@app.route("/cantor/<string:currency>/<int:amount>")
+def cantor(currency, amount):
+    """
+    Nazwy zmiennych odpowiadają nazwą parametrów w url
+    :param currency:
+    :param amount:
+    :return:
+    """
+    message = f"<h1>You selected {currency} and {amount}<h1>"
+    return message
 
 
 if __name__ == '__main__':
