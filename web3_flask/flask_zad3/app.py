@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, url_for
 
 app = Flask(__name__)
@@ -16,7 +18,11 @@ def index():
     Add Audi 10000 go <a href="{url_for('offer', brand="Audi", price=10000)}">here</a><br>
     <img src="{url_for('static', filename='1.svg')}" alt="1.svg" alt="Sample"><br>
     <img src="{url_for('static', filename='cars/audi.svg')}" alt="1.svg" alt="Audi"><br>
+    {url_for('static', filename='cars/audi.svg')}<br>
+    {os.path.join(app.static_folder, 'cars/audi.svg')}
     """
+    # /static/cars/audi.svg
+    # /Users/radoslawjaniak/BootCamp-11-10-2025-WEB/web3_flask/flask_zad3/static/cars/audi.svg
     return f"<h1>Car Ads Portal</h1><br>{menu}"
 
 
