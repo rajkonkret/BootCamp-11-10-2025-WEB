@@ -23,3 +23,6 @@ Specyficzność jest obliczana na podstawie “wag”:
 	•	Klasa: .class → specyficzność: 10.
 	•	Element HTML: div, p → specyficzność: 1.
 Aby strona poprawnie wyświetlała się przy zmianie szerokości okna
+
+Paleta kolorów rgb\
+https://doneta.pl/blog/paleta-kolorow-rgb/
