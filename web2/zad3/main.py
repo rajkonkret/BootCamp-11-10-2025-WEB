@@ -28,4 +28,29 @@ async def create_task(task: Task, background_task: BackgroundTasks):
     background_task.add_task(add_task, task.title)
     return {"message": "Task creation scheduled"}
 # uvicorn main:app --reload
+# python -m uvicorn main:app --reload
 # http://127.0.0.1:8000/docs
+# curl -X 'POST' \
+#   'http://127.0.0.1:8000/tasks/' \
+#   -H 'accept: application/json' \
+#   -H 'Content-Type: application/json' \
+#   -d '{
+#   "title": "zadanie1"
+# }'
+
+# {
+#   "tasks": [
+#     {
+#       "id": 1,
+#       "title": "zadanie1"
+#     },
+#     {
+#       "id": 2,
+#       "title": "zad2"
+#     },
+#     {
+#       "id": 3,
+#       "title": "zad3"
+#     }
+#   ]
+# }
