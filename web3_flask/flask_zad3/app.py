@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, url_for
+from flask import Flask, url_for, request
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def index():
     #     <img src="1.svg" alt="1.svg" alt="Sample"><br>
     #     """
     menu = f"""
-    Add new <a href="">offer</a><br>
+    Add new <a href="{url_for('create_offer')}">offer</a><br>
     Add Audi 10000 go <a href="{url_for('offer', brand="Audi", price=10000)}">here</a><br>
     <img src="{url_for('static', filename='1.svg')}"  alt="Sample"><br>
     <img src="{url_for('static', filename='cars/audi.svg')}"  alt="Audi"><br>
@@ -29,6 +29,34 @@ def index():
 # http://127.0.0.1:5000/offer/audi/1000
 @app.route('/offer/<string:brand>/<int:price>')
 def offer(brand, price):
+    return f"<h1>You selected: {brand} price: {price}"
+
+
+@app.route("/create_offer")
+def create_offer():
+    body = f"""
+    <h1>Create Offer</h1>
+    <form action="{url_for("exchange_offer")}" method="POST">
+        <label>Car brand</label><br>
+        <input type="text" name="brand" value="BMW"<br><br>
+        
+        <label>Price</label><br>
+        <input type="number" name="price" value="50000"><br><br>
+
+        <input type="submit" value="Create Offer">
+        <br><a href="{url_for('index')}">Back to Home</a>
+    """
+    return body
+
+
+@app.route("/exchange_offer", methods=['POST'])
+def exchange_offer():
+    brand = "BMW"
+    if 'brand' in request.form["brand"]:
+        brand = request.form['brand']
+
+    price = request.form.get("price", "0")
+
     return f"<h1>You selected: {brand} price: {price}"
 
 
