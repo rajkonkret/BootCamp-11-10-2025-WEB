@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, render_template
 
 app = Flask(__name__)
 
@@ -36,19 +36,8 @@ def offer(brand, price):
 def create_offer():
     # <form action="{url_for("exchange_offer")}" method="POST">
     if request.method == 'GET':
-        body = f"""
-        <h1>Create Offer</h1>
-        <form action="{url_for('create_offer')}" method="POST">
-            <label>Car brand</label><br>
-            <input type="text" name="brand" value="BMW"><br><br>
-            
-            <label>Price</label><br>
-            <input type="number" name="price" value="50000"><br><br>
-    
-            <input type="submit" value="Create Offer">
-            <br><a href="{url_for('index')}">Back to Home</a>
-        """
-        return body
+
+        return render_template('create_offer.html')
     else:
         print("Jestem w create_offer")
         brand = request.form.get("brand", "BMW")
