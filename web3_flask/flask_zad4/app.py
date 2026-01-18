@@ -1,6 +1,6 @@
 import os
 #  pip install -r requirements.txt
-from flask import Flask, url_for, request, redirect, render_template
+from flask import Flask, url_for, request, redirect, render_template, flash
 
 app = Flask(__name__)
 
@@ -14,10 +14,12 @@ class CarBrand:
     def __repr__(self):
         return f'<CarBrand {self.code}>'
 
+
 class CarBrandsOffer:
 
     def __init__(self):
         self.brands = []
+        self.denied_codes = []
 
     def load_offer(self):
         """
@@ -28,6 +30,9 @@ class CarBrandsOffer:
         self.brands.append(CarBrand("Audi", "Audi", 'cars/audi.svg'))
         self.brands.append(CarBrand("Toyota", "Toyota", 'cars/toyota.svg'))
         self.brands.append(CarBrand("Mercedes", "Mercedes", 'cars/mercedes.svg'))
+
+        # zablokowane marki
+        self.denied_codes.append('LADA')
 
     def get_by_code(self, code):
         """
@@ -40,6 +45,7 @@ class CarBrandsOffer:
                 return brand
 
         return CarBrand("UNKNOWN", "Unknown", "cars/unknown.svg")
+
 
 # http://127.0.0.1:5000/
 @app.route("/")
@@ -73,6 +79,13 @@ def create_offer():
         brand = request.form.get("brand", "BMW")
 
         price = request.form.get("price", "0")
+
+        if brand in offer.denied_codes:
+            flash(f"The brand {brand} cannot be accepted")
+        elif offer.get_by_code(brand) == "unknown":
+            flash("The selected brand is unknown and cannot be accepted")
+        else:
+            flash(f"Request to process: {brand} was accepted")
 
         # return f"<h1>You selected: {brand} price: {price}"
         # przekierowujemy aplikację do endpointa
