@@ -17,10 +17,11 @@
         <tr>
             <th scope="row">{{ offer.id }}</th>
             <td>{{ offer.brand }}</td>
-            <td>{{ offer.price }}</td>
+            <td>{{ "{:,.2f}".format(offer.price) }}</td>
             <td>
-                <a href="#" class="btn btn-primary btn-sm" role="button">Actions...</a>
+                <a href="#" class="btn btn-primary btn-sm" role="button">View</a>
                 <a href="#" class="btn btn-success btn-sm" role="button">Edit</a>
+<!--                <a href="#" class="btn btn-danger btn-sm" role="button">Delete</a>-->
                 <a type="button" class="btn btn-danger btn-sm delete-confirm">Delete</a>
 
             </td>
