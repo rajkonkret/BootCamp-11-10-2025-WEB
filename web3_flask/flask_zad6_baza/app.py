@@ -140,5 +140,57 @@ def history():
     return render_template("history.html", offers=offers)
 
 
+@app.route("/edit_offer/<int:offer_id>", methods=['GET', 'POST'])
+def edit_offer(offer_id):
+    db = get_db()
+    spinner = CarBrandsOffer()
+    spinner.load_offer()
+
+    if request.method == "GET":
+        sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
+        cur = db.execute(sql_command, (offer_id,))
+        offer = cur.fetchone() # pobranie jednego rekordu
+        print(offer)
+
+        if offer == None:
+            flash("No such offer!")
+            return redirect(url_for('history'))
+        else:
+            return render_template("edit_offer.html",
+                            offer=offer,
+                            spinner=spinner)
+    else:
+        flash("Debug: starting process in POST mode")
+        brand = request.form.get("brand", "BMW")
+
+        price = request.form.get("price", "0")
+
+        if brand in spinner.denied_codes:
+            flash(f"The brand {brand} cannot be accepted")
+        elif spinner.get_by_code(brand) == "unknown":
+            flash("The selected brand is unknown and cannot be accepted")
+        else:
+            flash(f"Request to process: {brand} was accepted")
+
+        db = get_db()
+        sql_commnd = """
+        UPDATE offers SET
+        brand=?,
+        price=?,
+        user=?
+        WHERE id=?;
+        """
+        db.execute(sql_commnd, (brand, price, 'admin', offer_id))
+        db.commit()
+
+        # return f"<h1>You selected: {brand} price: {price}"
+        # przekierowujemy aplikację do endpointa
+        # return redirect(
+        #     url_for("offer", brand=brand, price=int(price))
+        # )
+        flash("Transaction was updated")
+
+    return redirect(url_for('history'))
+
 if __name__ == '__main__':
     app.run(debug=True)
