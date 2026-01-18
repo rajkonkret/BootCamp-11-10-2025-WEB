@@ -29,7 +29,7 @@ def index():
 # http://127.0.0.1:5000/offer/audi/1000
 @app.route('/offer/<string:brand>/<int:price>')
 def offer(brand, price):
-    return f"<h1>You selected: {brand} price: {price}"
+    return f"<h1>You selected: {brand} price: {price}</h1>"
 
 
 @app.route("/create_offer", methods=['GET', 'POST'])
