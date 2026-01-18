@@ -135,9 +135,9 @@ def history():
     db = get_db()
     sql_command = "SELECT id, brand, price FROM offers;"
     cur = db.execute(sql_command)
-    transactions = cur.fetchall()
+    offers = cur.fetchall()
 
-    return render_template("history.html", transactions=transactions)
+    return render_template("history.html", offers=offers)
 
 
 if __name__ == '__main__':
