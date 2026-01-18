@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Car Ads Portal</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    Add new <a href="{{ url_for('create_offer') }}">offer</a><br>
-    Add Audi 10000 go <a href="{{ url_for('offer', brand='Audi', price=10000) }}">here</a><br>
-    <img src="{{ url_for('static', filename='1.svg') }}"  alt="Sample"><br>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block body_header %}
+    Welcome to our <br>
+    Car Ads Portal
+{% endblock %}
+
+{% block body_content %}
+    <p>We are happy to see you here</p>
+{% endblock %}
