@@ -29,6 +29,17 @@ class CarBrandsOffer:
         self.brands.append(CarBrand("Toyota", "Toyota", 'cars/toyota.svg'))
         self.brands.append(CarBrand("Mercedes", "Mercedes", 'cars/mercedes.svg'))
 
+    def get_by_code(self, code):
+        """
+        Zwraca obiekt CarBrand na podstawie marki
+        :param code:
+        :return:
+        """
+        for brand in self.brands:
+            if brand.code == code:
+                return brand
+
+        return CarBrand("UNKNOWN", "Unknown", "cars/unknown.svg")
 
 # http://127.0.0.1:5000/
 @app.route("/")
