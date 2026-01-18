@@ -6,13 +6,10 @@
 {% endblock %}
 
 {% block body_content %}
-    {% if brand=='BMW' %}
-        <img src="{{ url_for('static', filename='cars/bmw.svg') }}">
-    {% elif brand=='Audi' %}
-        <img src="{{ url_for('static', filename='cars/audi.svg') }}">
-    {% elif brand=='Toyota' %}
-        <img src="{{ url_for('static', filename='cars/toyota.svg') }}">
+    {% if offer_info != 'unknown' %}
+        <img src="{{ url_for('static', filename=offer_info.logo) }}">
+
     {% else %}
-        <img src="{{ url_for('static', filename='1.svg') }}">
+        <p>This brand is unknow for us</p>
     {% endif %}
 {% endblock %}
