@@ -112,6 +112,11 @@ def create_offer():
         else:
             flash(f"Request to process: {brand} was accepted")
 
+        db = get_db()
+        sql_commnd = "INSERT INTO offers(brand, price, user) VALUES (?,?,?)"
+        db.execute(sql_commnd, (brand, price, 'admin'))
+        db.commit()
+
         # return f"<h1>You selected: {brand} price: {price}"
         # przekierowujemy aplikację do endpointa
         # return redirect(
@@ -123,6 +128,16 @@ def create_offer():
             price=price,
             offer_info=offer.get_by_code(brand)
         )
+
+
+@app.route("/history")
+def history():
+    db = get_db()
+    sql_command = "SELECT id, brand, price FROM offers;"
+    cur = db.execute(sql_command)
+    transactions = cur.fetchall()
+
+    return render_template("history.html", transactions=transactions)
 
 
 if __name__ == '__main__':
