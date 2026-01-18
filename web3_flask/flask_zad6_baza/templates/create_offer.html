@@ -8,7 +8,7 @@
     </div>
 
 <form action="{{ url_for('create_offer') }}" method="POST">
-  <div class="form-group">
+  <div class="mb-3">
     <label for="brand">Brand</label>
      <select id="brand" name="brand" class="form-select" required>
         {% for brand in offer.brands %}
@@ -16,7 +16,7 @@
         {% endfor %}
     </select>
   </div>
-  <div class="form-group">
+  <div class="mb-3">
     <label for="price">Price</label>
     <input type="number"
            class="form-control"
@@ -24,7 +24,6 @@
            name="price"
            value="25000">
   </div>
-    <br>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 </div>
