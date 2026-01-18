@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+{% block body_header %}
+    <h1>You selected: {{ brand }} <br>
+        price: {{ price }}</h1>
+{% endblock %}
+
+{% block body_content %}
+    {% if offer_info != 'unknown' %}
+        <img src="{{ url_for('static', filename=offer_info.logo) }}">
+
+    {% else %}
+        <p>This brand is unknow for us</p>
+    {% endif %}
+{% endblock %}
