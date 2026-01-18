@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 
-{% block body_header %}
-    <h1>You selected: {{ brand }} <br>
-        price: {{ price }}</h1>
-{% endblock %}
-
 {% block body_content %}
+<div class="container">
     {% if offer_info != 'unknown' %}
-        <img src="{{ url_for('static', filename=offer_info.logo) }}">
-
+    <div class="col-2"></div>
+    <div class="col">
+        <img src="{{ url_for('static', filename=offer_info.logo) }}"
+        class="img-fluid rounded-5 mx-auto d-block">
+<!--        class="img-fluid rounded-circle mx-auto d-block">-->
+    </div>
+    <div class="col-2"></div>
     {% else %}
-        <p>This brand is unknow for us</p>
+    <p>This brand is unknown for us</p>
     {% endif %}
+
+</div>
 {% endblock %}
