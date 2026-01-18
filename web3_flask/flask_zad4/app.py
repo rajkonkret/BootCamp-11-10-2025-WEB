@@ -24,9 +24,9 @@ class CarBrandsOffer:
         Ładuje dostępne marki samochodów do spinnera
         :return:
         """
-        self.brands(CarBrand("BMW", "BMW", 'cars/bmw.svg'))
-        self.brands(CarBrand("Audi", "Audi", 'cars/audi.svg'))
-        self.brands(CarBrand("Toyota", "Toyota", 'cars/toyota.svg'))
+        self.brands.append(CarBrand("BMW", "BMW", 'cars/bmw.svg'))
+        self.brands.append(CarBrand("Audi", "Audi", 'cars/audi.svg'))
+        self.brands.append(CarBrand("Toyota", "Toyota", 'cars/toyota.svg'))
 
 
 # http://127.0.0.1:5000/
@@ -49,9 +49,13 @@ def offer(brand, price):
 @app.route("/create_offer", methods=['GET', 'POST'])
 def create_offer():
     # <form action="{url_for("exchange_offer")}" method="POST">
+    offer = CarBrandsOffer()
+    offer.load_offer()
+
     if request.method == 'GET':
 
-        return render_template('create_offer.html')
+        # return render_template('create_offer.html')
+        return render_template('create_offer.html', offer=offer)
     else:
         print("Jestem w create_offer")
         brand = request.form.get("brand", "BMW")
