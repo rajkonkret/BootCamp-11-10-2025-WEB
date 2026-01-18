@@ -8,29 +8,18 @@ app = Flask(__name__)
 # http://127.0.0.1:5000/
 @app.route("/")
 def index():
-    # menu = f"""
-    #     Add new <a href="">offer</a><br>
-    #     Add Audi 10000 go <a href="offer/Audi/10000">here</a><br>
-    #     <img src="1.svg" alt="1.svg" alt="Sample"><br>
-    #     """
-    # menu = f"""
-    # Add new <a href="{url_for('create_offer')}">offer</a><br>
-    # Add Audi 10000 go <a href="{url_for('offer', brand="Audi", price=10000)}">here</a><br>
-    # <img src="{url_for('static', filename='1.svg')}"  alt="Sample"><br>
-    # <img src="{url_for('static', filename='cars/audi.svg')}"  alt="Audi"><br>
-    # {url_for('static', filename='cars/audi.svg')}<br>
-    # {os.path.join(app.static_folder, 'cars/audi.svg')}
-    # """
-    # /static/cars/audi.svg
-    # /Users/radoslawjaniak/BootCamp-11-10-2025-WEB/web3_flask/flask_zad3/static/cars/audi.svg
-    # return f"<h1>Car Ads Portal</h1><br>{menu}"
     return render_template('index.html')
 
 
 # http://127.0.0.1:5000/offer/audi/1000
 @app.route('/offer/<string:brand>/<int:price>')
 def offer(brand, price):
-    return f"<h1>You selected: {brand} price: {price}</h1>"
+    # return f"<h1>You selected: {brand} price: {price}</h1>"
+    return render_template(
+        "exchange_offer.html",
+        brand=brand,
+        price=price
+    )
 
 
 @app.route("/create_offer", methods=['GET', 'POST'])
@@ -50,22 +39,6 @@ def create_offer():
         return redirect(
             url_for("offer", brand=brand, price=int(price))
         )
-
-
-# @app.route("/exchange_offer", methods=['POST'])
-# def exchange_offer():
-#     # brand = "BMW"
-#     # if 'brand' in request.form:
-#     #     brand = request.form['brand']
-#     brand = request.form.get("brand", "BMW")
-#
-#     price = request.form.get("price", "0")
-#
-#     # return f"<h1>You selected: {brand} price: {price}"
-#     # przekierowujemy aplikację do endpointa
-#     return redirect(
-#         url_for("offer", brand=brand, price=int(price))
-#     )
 
 
 if __name__ == '__main__':
