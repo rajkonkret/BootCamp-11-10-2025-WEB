@@ -27,6 +27,7 @@ class CarBrandsOffer:
         self.brands.append(CarBrand("BMW", "BMW", 'cars/bmw.svg'))
         self.brands.append(CarBrand("Audi", "Audi", 'cars/audi.svg'))
         self.brands.append(CarBrand("Toyota", "Toyota", 'cars/toyota.svg'))
+        self.brands.append(CarBrand("Mercedes", "Mercedes", 'cars/mercedes.svg'))
 
 
 # http://127.0.0.1:5000/
