@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, url_for, request
+from flask import Flask, url_for, request, redirect
 
 app = Flask(__name__)
 
@@ -32,32 +32,50 @@ def offer(brand, price):
     return f"<h1>You selected: {brand} price: {price}"
 
 
-@app.route("/create_offer")
+@app.route("/create_offer", methods=['GET', 'POST'])
 def create_offer():
-    body = f"""
-    <h1>Create Offer</h1>
-    <form action="{url_for("exchange_offer")}" method="POST">
-        <label>Car brand</label><br>
-        <input type="text" name="brand" value="BMW"<br><br>
-        
-        <label>Price</label><br>
-        <input type="number" name="price" value="50000"><br><br>
+    # <form action="{url_for("exchange_offer")}" method="POST">
+    if request.method == 'GET':
+        body = f"""
+        <h1>Create Offer</h1>
+        <form action="{url_for("create_offer")}" method="POST">
+            <label>Car brand</label><br>
+            <input type="text" name="brand" value="BMW"<br><br>
+            
+            <label>Price</label><br>
+            <input type="number" name="price" value="50000"><br><br>
+    
+            <input type="submit" value="Create Offer">
+            <br><a href="{url_for('index')}">Back to Home</a>
+        """
+        return body
+    else:
+        print("Jestem w create_offer")
+        brand = request.form.get("brand", "BMW")
 
-        <input type="submit" value="Create Offer">
-        <br><a href="{url_for('index')}">Back to Home</a>
-    """
-    return body
+        price = request.form.get("price", "0")
+
+        # return f"<h1>You selected: {brand} price: {price}"
+        # przekierowujemy aplikację do endpointa
+        return redirect(
+            url_for("offer", brand=brand, price=int(price))
+        )
 
 
-@app.route("/exchange_offer", methods=['POST'])
-def exchange_offer():
-    brand = "BMW"
-    if 'brand' in request.form["brand"]:
-        brand = request.form['brand']
-
-    price = request.form.get("price", "0")
-
-    return f"<h1>You selected: {brand} price: {price}"
+# @app.route("/exchange_offer", methods=['POST'])
+# def exchange_offer():
+#     # brand = "BMW"
+#     # if 'brand' in request.form:
+#     #     brand = request.form['brand']
+#     brand = request.form.get("brand", "BMW")
+#
+#     price = request.form.get("price", "0")
+#
+#     # return f"<h1>You selected: {brand} price: {price}"
+#     # przekierowujemy aplikację do endpointa
+#     return redirect(
+#         url_for("offer", brand=brand, price=int(price))
+#     )
 
 
 if __name__ == '__main__':
