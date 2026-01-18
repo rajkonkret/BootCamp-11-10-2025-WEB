@@ -149,7 +149,7 @@ def edit_offer(offer_id):
     if request.method == "GET":
         sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
         cur = db.execute(sql_command, (offer_id,))
-        offer = cur.fetchone() # pobranie jednego rekordu
+        offer = cur.fetchone()  # pobranie jednego rekordu
         print(offer)
 
         if offer == None:
@@ -157,8 +157,8 @@ def edit_offer(offer_id):
             return redirect(url_for('history'))
         else:
             return render_template("edit_offer.html",
-                            offer=offer,
-                            spinner=spinner)
+                                   offer=offer,
+                                   spinner=spinner)
     else:
         flash("Debug: starting process in POST mode")
         brand = request.form.get("brand", "BMW")
@@ -192,5 +192,17 @@ def edit_offer(offer_id):
 
     return redirect(url_for('history'))
 
+
+# delete jako metoda POST, gdy używamy modal
+@app.route("/delete_offer/<int:offer_id>", methods=["POST"])
+def delete_offer(offer_id):
+    db = get_db()
+    sql_command = "DELETE FROM offers WHERE id=?"
+    db.execute(sql_command, (offer_id,))
+    db.commit()
+
+    return redirect(url_for('history'))
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
