@@ -9,9 +9,9 @@
 <form action="{{ url_for('create_offer') }}" method="POST">
     <label>Car brand</label><br>
     <select for="brand" name="brand">
-        <option value="BMW">BMW</option>
-        <option value="Audi">Audi</option>
-        <option value="Toyota">Toyota</option>
+        {% for brand in offer.brands %}
+            <option value="{{ brand.code }}">{{ brand.name }}</option>
+        {% endfor %}
     </select><br>
 
     <label>Price</label><br>
