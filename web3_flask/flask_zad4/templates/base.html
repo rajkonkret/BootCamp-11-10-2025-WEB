@@ -8,7 +8,7 @@
 </head>
 <body>
 {% for message in get_flashed_messages() %}
-    <div>{{ message }}</div>
+    <div style="color:red; border-style: solid; background-color: yellow;">{{ message }}</div>
 {% endfor %}
 
 {% include "menu.html" %}
