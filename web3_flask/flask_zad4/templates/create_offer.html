@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Ads Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Create Offer</h1>
+        <form action="{url_for('create_offer')}" method="POST">
+            <label>Car brand</label><br>
+            <input type="text" name="brand" value="BMW"><br><br>
+
+            <label>Price</label><br>
+            <input type="number" name="price" value="50000"><br><br>
+
+            <input type="submit" value="Create Offer">
+            <br><a href="{url_for('index')}">Back to Home</a>
+</body>
+</html>
