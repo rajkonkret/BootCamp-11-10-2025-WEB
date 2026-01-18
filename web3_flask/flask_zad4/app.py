@@ -5,6 +5,30 @@ from flask import Flask, url_for, request, redirect, render_template
 app = Flask(__name__)
 
 
+class CarBrand:
+    def __init__(self, code, name, logo):
+        self.code = code
+        self.name = name
+        self.logo = logo
+
+    def __repr__(self):
+        return f'<CarBrand {self.code}>'
+
+class CarBrandsOffer:
+
+    def __init__(self):
+        self.brands = []
+
+    def load_offer(self):
+        """
+        Ładuje dostępne marki samochodów do spinnera
+        :return:
+        """
+        self.brands(CarBrand("BMW", "BMW", 'cars/bmw.svg'))
+        self.brands(CarBrand("Audi", "Audi", 'cars/audi.svg'))
+        self.brands(CarBrand("Toyota", "Toyota", 'cars/toyota.svg'))
+
+
 # http://127.0.0.1:5000/
 @app.route("/")
 def index():
