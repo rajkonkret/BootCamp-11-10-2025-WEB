@@ -7,6 +7,10 @@
 
 </head>
 <body>
+{% for message in get_flashed_messages() %}
+    <div>{{ message }}</div>
+{% endfor %}
+
 {% include "menu.html" %}
 
 <h1>

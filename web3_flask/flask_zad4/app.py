@@ -3,6 +3,8 @@ import os
 from flask import Flask, url_for, request, redirect, render_template, flash
 
 app = Flask(__name__)
+# dodajemy secret_key aby działały flash
+app.config['SECRET_KEY'] = "KluczTrudnyDoZlamania"
 
 
 class CarBrand:
@@ -76,6 +78,7 @@ def create_offer():
         return render_template('create_offer.html', offer=offer)
     else:
         print("Jestem w create_offer")
+        flash("Debug: starting process in POST mode")
         brand = request.form.get("brand", "BMW")
 
         price = request.form.get("price", "0")
