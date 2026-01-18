@@ -1,10 +1,32 @@
 import os
+import sqlite3
+
 #  pip install -r requirements.txt
-from flask import Flask, url_for, request, redirect, render_template, flash
+from flask import Flask, url_for, request, redirect, render_template, flash, g
+
+app_info = {
+    'db_file': 'data/car_ads_portal.db'
+}
 
 app = Flask(__name__)
 # dodajemy secret_key aby działały flash
 app.config['SECRET_KEY'] = "KluczTrudnyDoZlamania"
+
+
+# Singleton
+def get_db():
+    if not hasattr(g, 'sqlite_db'):
+        conn = sqlite3.connect(app_info['db_file'])
+        conn.row_factory = sqlite3.Row  # dostaniemy słownik
+        g.sqlite_db = conn
+
+    return g.sqlite_db
+
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'sqlite_db'):
+        g.sqlite_db.close()
 
 
 class CarBrand:
