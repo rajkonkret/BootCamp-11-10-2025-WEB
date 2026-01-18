@@ -1,5 +1,5 @@
 import os
-
+#  pip install -r requirements.txt
 from flask import Flask, url_for, request, redirect, render_template
 
 app = Flask(__name__)
