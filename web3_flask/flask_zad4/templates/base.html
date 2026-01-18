@@ -1,3 +1,4 @@
+{% from "macros.html" import show_flash_message %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
 </head>
 <body>
 {% for message in get_flashed_messages() %}
-    <div style="color:red; border-style: solid; background-color: yellow;">{{ message }}</div>
+    {{ show_flash_message(message) }}
 {% endfor %}
 
 {% include "menu.html" %}
