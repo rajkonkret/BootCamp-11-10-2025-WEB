@@ -8,6 +8,11 @@
 {% block body_content %}
     {% if brand=='BMW' %}
         <img src="{{ url_for('static', filename='cars/bmw.svg') }}">
-    {% elif
+    {% elif brand=='Audi' %}
+        <img src="{{ url_for('static', filename='cars/audi.svg') }}">
+    {% elif brand=='Toyota' %}
+        <img src="{{ url_for('static', filename='cars/toyota.svg') }}">
+    {% else %}
+        <img src="{{ url_for('static', filename='1.svg') }}">
     {% endif %}
 {% endblock %}
