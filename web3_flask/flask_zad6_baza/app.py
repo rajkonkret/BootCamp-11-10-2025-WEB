@@ -81,6 +81,12 @@ def index():
 # http://127.0.0.1:5000/offer/audi/1000
 @app.route('/offer/<string:brand>/<int:price>')
 def offer(brand, price):
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
     # return f"<h1>You selected: {brand} price: {price}</h1>"
     return render_template(
         "exchange_offer.html",
@@ -91,6 +97,12 @@ def offer(brand, price):
 
 @app.route("/create_offer", methods=['GET', 'POST'])
 def create_offer():
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
     # <form action="{url_for("exchange_offer")}" method="POST">
     offer = CarBrandsOffer()
     offer.load_offer()
@@ -135,6 +147,12 @@ def create_offer():
 
 @app.route("/history")
 def history():
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
     db = get_db()
     sql_command = "SELECT id, brand, price FROM offers;"
     cur = db.execute(sql_command)
@@ -145,6 +163,12 @@ def history():
 
 @app.route("/edit_offer/<int:offer_id>", methods=['GET', 'POST'])
 def edit_offer(offer_id):
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
     db = get_db()
     spinner = CarBrandsOffer()
     spinner.load_offer()
@@ -199,6 +223,12 @@ def edit_offer(offer_id):
 # delete jako metoda POST, gdy używamy modal
 @app.route("/delete_offer/<int:offer_id>", methods=["POST"])
 def delete_offer(offer_id):
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
     db = get_db()
     sql_command = "DELETE FROM offers WHERE id=?"
     db.execute(sql_command, (offer_id,))
@@ -214,6 +244,12 @@ def view_offer(offer_id):
     :param offer_id:
     :return:
     """
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
     spinner = CarBrandsOffer()
     spinner.load_offer()
 
@@ -334,6 +370,7 @@ def login():
             flash("Login failed, try again")
             return render_template('login.html', login=login)
 
+
 @app.route('/logout')
 def logout():
     if 'user' in session:
@@ -341,6 +378,31 @@ def logout():
         flash("You are logget out")
 
     return redirect(url_for('login'))
+
+
+@app.route('/users')
+def users():
+    return "not implemented"
+
+
+@app.route('/edit_user/<user_name>', methods=['GET', 'POST'])
+def edit_user(user_name):
+    return "not implemented"
+
+
+@app.route('/delete_user/<user_name>')
+def delete_user(user_name):
+    return "not implemented"
+
+
+@app.route('/new_user', methods=['GET', 'POST'])
+def new_user():
+    # return "not implemented"
+
+    if request.method == 'GET':
+        return render_template('new_user.html')
+    else:
+        return "not implemented"
 
 
 if __name__ == '__main__':
