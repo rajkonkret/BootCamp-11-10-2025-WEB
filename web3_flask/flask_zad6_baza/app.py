@@ -390,6 +390,7 @@ def users():
 
     return render_template('users.html', users=users)
 
+
 @app.route('/edit_user/<user_name>', methods=['GET', 'POST'])
 def edit_user(user_name):
     return "not implemented"
@@ -398,6 +399,7 @@ def edit_user(user_name):
 @app.route('/delete_user/<user_name>')
 def delete_user(user_name):
     return "not implemented"
+
 
 # {'user_name': 'radek', 'user_pass': 'raj123', 'email': 'rad@wp.pl'}
 @app.route('/new_user', methods=['GET', 'POST'])
@@ -454,6 +456,29 @@ def new_user():
         else:
             flash(f"Correct error: {message}")
             return render_template("new_user.html", user=user)
+
+
+@app.route("/user_status_change/<action>/<user_name>")
+def user_status_change(action, user_name):
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+
+    db = get_db()
+
+    if action == "active":
+        db.execute("""
+        UPDATE users SET is_active = (is_active + 1) % 2
+        WHERE name=? and name <> ?;""",
+                   (user_name, login.user))
+        db.commit()
+    elif action == "admin":
+        db.execute("""
+               UPDATE users SET is_admin = (is_admin + 1) % 2
+               WHERE name=? and name <> ?;""",
+                   (user_name, login.user))
+        db.commit()
+
+    return redirect(url_for('users'))
 
 
 if __name__ == '__main__':

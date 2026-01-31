@@ -80,7 +80,7 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>
-                <a href="#">
+                <a href="{{ url_for('user_status_change', action='active', user_name=user.name) }}">
                     {% if user.is_active %}
                     &check;
                     {% else %}
@@ -89,7 +89,7 @@
                 </a>
             </td>
              <td>
-                <a href="#">
+                <a href="{{ url_for('user_status_change', action='admin', user_name=user.name) }}">
                     {% if user.is_admin %}
                     &check;
                     {% else %}
