@@ -14,12 +14,14 @@
         <li class="nav-item">
           <a class="nav-link   {{ 'active' if active_menu=='home' }}" aria-current="page" href="{{ url_for('index') }}">Home</a>
         </li>
+           {% if login.is_valid %}
         <li class="nav-item">
           <a class="nav-link   {{ 'active' if active_menu=='create_offer' }}" href="{{ url_for('create_offer') }}">Create Offer</a>
         </li>
         <li class="nav-item">
           <a class="nav-link   {{ 'active' if active_menu=='history' }}" href="{{ url_for('history') }}">History</a>
         </li>
+           {% endif %}
            <li class="nav-item">
           <a class="nav-link   {{ 'active' if active_menu=='login' }}" href="{{ url_for('login') }}">Login</a>
         </li>
