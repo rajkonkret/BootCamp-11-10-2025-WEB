@@ -393,7 +393,52 @@ def users():
 
 @app.route('/edit_user/<user_name>', methods=['GET', 'POST'])
 def edit_user(user_name):
-    return "not implemented"
+    # return "not implemented"
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
+    db = get_db()
+    spinner = CarBrandsOffer()
+    spinner.load_offer()
+
+    sql_command = "SELECT id, name, email, is_active, is_admin FROM users WHERE name=?"
+    cur = db.execute(sql_command, (user_name,))
+    user_record = cur.fetchone()  # pobranie jednego rekordu
+    print(user_record)
+
+    if offer is None:
+        flash("No such user!")
+        return redirect(url_for('users'))
+
+    if request.method == "GET":
+        return render_template("edit_user.html",
+                               user=user_record,
+                               spinner=spinner)
+    else:
+        # return "not implemented"
+        # user_name, email, user_pass
+        print(request.form)
+        new_name = request.form.get('user_name', '')
+        new_password = request.form.get('user_pass', '')
+        new_email = request.form.get('email', '')
+
+        if new_email != user_record['email']:
+            sql_statement = "UPDATE users SET email=? WHERE name=?;"
+            db.execute(sql_statement, (new_email, user_name))
+            db.commit()
+            flash("Email was changed")
+
+        if new_password != "":
+            user_pass = UserPass(user_name, new_name)
+            sql_statement = "UPDATE users SET password=? WHERE name=?;"
+            db.execute(sql_statement, (user_pass.hash_password(new_password), user_name))
+            db.commit()
+            flash("Password was changed")
+
+        return redirect(url_for('users'))
 
 
 # na wzór tego
@@ -413,7 +458,7 @@ def edit_user(user_name):
 #
 #     return redirect(url_for('history'))
 
-@app.route('/delete_user/<user_name>',  methods=["POST"])
+@app.route('/delete_user/<user_name>', methods=["POST"])
 def delete_user(user_name):
     # return "not implemented"
 
