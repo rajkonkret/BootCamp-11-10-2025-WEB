@@ -383,6 +383,12 @@ def logout():
 @app.route('/users')
 def users():
     # return "not implemented"
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid or not login.is_admin:
+        return redirect(url_for('login'))
+
     db = get_db()
     sql_command = "SELECT id, name, email, is_admin, is_active FROM users;"
     cur = db.execute(sql_command)
@@ -397,7 +403,7 @@ def edit_user(user_name):
     # sprawdzanie czy user jest zalogowany
     login = UserPass(session.get('user'))
     login.get_user_info()
-    if not login.is_valid:
+    if not login.is_validor or not login.is_admin:
         return redirect(url_for('login'))
 
     db = get_db()
@@ -465,7 +471,7 @@ def delete_user(user_name):
     # sprawdzanie czy user jest zalogowany
     login = UserPass(session.get('user'))
     login.get_user_info()
-    if not login.is_valid:
+    if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
     db = get_db()
@@ -480,6 +486,12 @@ def delete_user(user_name):
 @app.route('/new_user', methods=['GET', 'POST'])
 def new_user():
     # return "not implemented"
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid or not login.is_admin:
+        return redirect(url_for('login'))
+
     db = get_db()
     message = None
     user = {}  # słownik
@@ -535,8 +547,14 @@ def new_user():
 
 @app.route("/user_status_change/<action>/<user_name>")
 def user_status_change(action, user_name):
+    # login = UserPass(session.get('user'))
+    # login.get_user_info()
+
+    # sprawdzanie czy user jest zalogowany
     login = UserPass(session.get('user'))
     login.get_user_info()
+    if not login.is_valid or not login.is_admin:
+        return redirect(url_for('login'))
 
     db = get_db()
 
