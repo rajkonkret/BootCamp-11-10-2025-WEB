@@ -3,7 +3,7 @@ import sqlite3
 import bcrypt
 
 #  pip install -r requirements.txt
-from flask import Flask, url_for, request, redirect, render_template, flash, g
+from flask import Flask, url_for, request, redirect, render_template, flash, g, session
 
 app_info = {
     'db_file': 'data/car_ads_portal.db'
@@ -308,12 +308,25 @@ class UserPass:
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    login = None
+    login = UserPass(session.get('user'))
+    login.get_user_info()
 
     if request.method == "GET":
         return render_template('login.html', login=login)
     else:
-        pass
+        user_name = request.form.get('user_name', '')
+        user_pass = request.form.get('user_pass', '')
+
+        login = UserPass(user_pass, user_name)
+        login_record = login.login_user()
+
+        if login_record is not None:
+            session['user'] = user_name
+            flash(f"Logon succesfull: {user_name}")
+            return redirect(url_for('index'))
+        else:
+            flash("Login failed, try again")
+            return render_template('login.html', login=login)
 
 
 if __name__ == '__main__':
