@@ -75,7 +75,9 @@ class CarBrandsOffer:
 # http://127.0.0.1:5000/
 @app.route("/")
 def index():
-    return render_template('index.html')
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    return render_template('index.html', login=login)
 
 
 # http://127.0.0.1:5000/offer/audi/1000
@@ -91,7 +93,8 @@ def offer(brand, price):
     return render_template(
         "exchange_offer.html",
         brand=brand,
-        price=price
+        price=price,
+        login=login
     )
 
 
@@ -110,7 +113,7 @@ def create_offer():
     if request.method == 'GET':
 
         # return render_template('create_offer.html')
-        return render_template('create_offer.html', offer=offer)
+        return render_template('create_offer.html', offer=offer, login=login)
     else:
         print("Jestem w create_offer")
         flash("Debug: starting process in POST mode")
@@ -158,7 +161,7 @@ def history():
     cur = db.execute(sql_command)
     offers = cur.fetchall()
 
-    return render_template("history.html", offers=offers)
+    return render_template("history.html", offers=offers, login=login)
 
 
 @app.route("/edit_offer/<int:offer_id>", methods=['GET', 'POST'])
@@ -185,7 +188,8 @@ def edit_offer(offer_id):
         else:
             return render_template("edit_offer.html",
                                    offer=offer,
-                                   spinner=spinner)
+                                   spinner=spinner,
+                                   login=login)
     else:
         flash("Debug: starting process in POST mode")
         brand = request.form.get("brand", "BMW")
@@ -266,7 +270,8 @@ def view_offer(offer_id):
     else:
         return render_template('view_offer_details.html',
                                offer_data=offer,
-                               spinner=spinner)
+                               spinner=spinner,
+                               login=login)
 
 
 # ======= LOGIN ======
@@ -394,7 +399,7 @@ def users():
     cur = db.execute(sql_command)
     users = cur.fetchall()
 
-    return render_template('users.html', users=users)
+    return render_template('users.html', users=users, login=login)
 
 
 @app.route('/edit_user/<user_name>', methods=['GET', 'POST'])
@@ -422,7 +427,8 @@ def edit_user(user_name):
     if request.method == "GET":
         return render_template("edit_user.html",
                                user=user_record,
-                               spinner=spinner)
+                               spinner=spinner,
+                               login=login)
     else:
         # return "not implemented"
         # user_name, email, user_pass
@@ -497,7 +503,7 @@ def new_user():
     user = {}  # słownik
 
     if request.method == 'GET':
-        return render_template('new_user.html', user=user)
+        return render_template('new_user.html', user=user, login=login)
     else:
         # return "not implemented"
         # user_name, email, user_pass
@@ -542,7 +548,7 @@ def new_user():
             return redirect(url_for('users'))
         else:
             flash(f"Correct error: {message}")
-            return render_template("new_user.html", user=user)
+            return render_template("new_user.html", user=user, login=login)
 
 
 @app.route("/user_status_change/<action>/<user_name>")
