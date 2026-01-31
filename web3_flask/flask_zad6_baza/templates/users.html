@@ -80,6 +80,24 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>
+                <a href="#">
+                    {% if user.is_active %}
+                    &check;
+                    {% else %}
+                    &#x25a2;
+                    {% endif %}
+                </a>
+            </td>
+             <td>
+                <a href="#">
+                    {% if user.is_admin %}
+                    &check;
+                    {% else %}
+                    &#x25a2;
+                    {% endif %}
+                </a>
+            </td>
+            <td>
 
                 <a href="{{ url_for('edit_user', user_name=user.name) }}"
                    class="btn btn-success btn-sm" role="button">Edit</a>
