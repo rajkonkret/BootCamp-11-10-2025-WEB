@@ -74,23 +74,21 @@
         </tr>
         </thead>
         <tbody>
-        {% for offer in offers %}
+        {% for user in users %}
         <tr>
-            <th scope="row">{{ offer.id }}</th>
-            <td>{{ offer.brand }}</td>
-            <td>{{ "{:,.2f}".format(offer.price) }}</td>
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
             <td>
-                <a href="{{ url_for('view_offer', offer_id=offer.id) }}" class="btn btn-primary btn-sm" role="button">View</a>
 
-                <a href="{{ url_for('edit_offer', offer_id=offer.id) }}"
+                <a href="{{ url_for('edit_user', user_name=user.name) }}"
                    class="btn btn-success btn-sm" role="button">Edit</a>
 
-<!--                <a href="{{ url_for('delete_offer', offer_id=offer.id) }}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
                 <button type="button" class="btn btn-danger btn-sm delete-confirm"
                     data-bs-toggle="modal"
                         data-bs-target="#confirmDeleteModal"
-                        data-desc="Delete offer {{ offer.id }} {{ offer.brand }}?"
-                    data-url="{{ url_for('delete_offer', offer_id=offer.id) }}">
+                        data-desc="Delete user {{ user.name }}?"
+                    data-url="{{ url_for('delete_user', user_name=user.name) }}">
                     Delete
                 </button>
 
