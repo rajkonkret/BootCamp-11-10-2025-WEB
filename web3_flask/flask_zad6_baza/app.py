@@ -396,9 +396,39 @@ def edit_user(user_name):
     return "not implemented"
 
 
-@app.route('/delete_user/<user_name>')
+# na wzór tego
+# # delete jako metoda POST, gdy używamy modal
+# @app.route("/delete_offer/<int:offer_id>", methods=["POST"])
+# def delete_offer(offer_id):
+#     # sprawdzanie czy user jest zalogowany
+#     login = UserPass(session.get('user'))
+#     login.get_user_info()
+#     if not login.is_valid:
+#         return redirect(url_for('login'))
+#
+#     db = get_db()
+#     sql_command = "DELETE FROM offers WHERE id=?"
+#     db.execute(sql_command, (offer_id,))
+#     db.commit()
+#
+#     return redirect(url_for('history'))
+
+@app.route('/delete_user/<user_name>',  methods=["POST"])
 def delete_user(user_name):
-    return "not implemented"
+    # return "not implemented"
+
+    # sprawdzanie czy user jest zalogowany
+    login = UserPass(session.get('user'))
+    login.get_user_info()
+    if not login.is_valid:
+        return redirect(url_for('login'))
+
+    db = get_db()
+    sql_command = "DELETE FROM users WHERE name=?"
+    db.execute(sql_command, (user_name,))
+    db.commit()
+
+    return redirect(url_for('users'))
 
 
 # {'user_name': 'radek', 'user_pass': 'raj123', 'email': 'rad@wp.pl'}
