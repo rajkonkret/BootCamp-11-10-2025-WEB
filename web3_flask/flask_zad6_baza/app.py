@@ -243,15 +243,67 @@ class UserPass:
         self.is_valid = False
         self.is_admin = False
 
+    # pbkdf2 - starsze hashowanie
     # bcrypt -> scrypt
     # argon2id
     @staticmethod
-    def hash_password():
+    def hash_password(password):
         """
         Hashuje hasłą używając
         :return:
         """
 
+        return (bcrypt.hashpw(
+            password.encode('utf-8'),
+            bcrypt.gensalt())
+                .decode('utf-8'))
+
+    @staticmethod
+    def verify_password(stored_password, provided_password):
+        """
+        Weryfikuje hasło
+        :param stored_password:
+        :param provided_password:
+        :return:
+        """
+
+        return bcrypt.checkpw(
+            provided_password.encode('utf-8'),
+            stored_password.encode('utf-8')
+        )
+
+    def login_user(self):
+        db = get_db()
+
+        sql_statement = 'SELECT id, name, password, is_active, is_admin FROM users WHERE name=?'
+        cur = db.execute(sql_statement, (self.user,))
+        user_record = cur.fetchone()
+
+        if user_record is not None and self.verify_password(user_record['password'], self.password):
+            return user_record
+        else:
+            self.user = None
+            self.password = None
+            return None
+
+    def get_user_info(self):
+        db = get_db()
+        sql_statement = 'SELECT name, email, is_active, is_admin FROM users WHERE name=?'
+        cur = db.execute(sql_statement, (self.user,))
+        db_user = cur.fetchone()
+
+        if db_user is None:
+            self.is_valid = False
+            self.is_admin = False
+            self.email = ''
+        elif db_user['is_active'] != 1:
+            self.is_admin = False
+            self.is_valid = False
+            self.email = db_user['email']
+        else:
+            self.is_valid = True
+            self.is_admin = db_user['is_admin']
+            self.email = db_user['email']
 
 
 @app.route("/login", methods=['GET', 'POST'])
