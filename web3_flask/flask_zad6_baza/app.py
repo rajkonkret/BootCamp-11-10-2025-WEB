@@ -203,6 +203,7 @@ def delete_offer(offer_id):
 
     return redirect(url_for('history'))
 
+
 @app.route("/view_offer/<int:offer_id>")
 def view_offer(offer_id):
     """
@@ -220,9 +221,14 @@ def view_offer(offer_id):
     offer = cur.fetchone()  # pobranie jednego rekordu
     print(offer)
 
-    return render_template('view_offer_details.html',
-                           offer_data=offer,
-                           spinner=spinner)
+    if offer is None:
+        flash("No such offer!")
+        return redirect(url_for('history'))
+    else:
+        return render_template('view_offer_details.html',
+                               offer_data=offer,
+                               spinner=spinner)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
