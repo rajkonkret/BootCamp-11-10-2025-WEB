@@ -23,10 +23,15 @@
            <li class="nav-item">
           <a class="nav-link" href="{{ url_for('login') }}">Login</a>
         </li>
+           {% if login.is_valid %}
           </li>
            <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          <a class="nav-link" href="{{ url_for('logout') }}">
+              Logout {{ session['user'] if 'user' in session }}
+          </a>
         </li>
+          {% endif %}
+
          {% if login.is_valid and login.is_admin %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
