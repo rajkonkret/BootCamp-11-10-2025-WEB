@@ -394,7 +394,7 @@ def edit_user(user_name):
 def delete_user(user_name):
     return "not implemented"
 
-
+# {'user_name': 'radek', 'user_pass': 'raj123', 'email': 'rad@wp.pl'}
 @app.route('/new_user', methods=['GET', 'POST'])
 def new_user():
     # return "not implemented"
@@ -403,45 +403,52 @@ def new_user():
     user = {}  # słownik
 
     if request.method == 'GET':
-        return render_template('new_user.html')
+        return render_template('new_user.html', user=user)
     else:
         # return "not implemented"
         # user_name, email, user_pass
+        print(request.form)
         user['user_name'] = request.form.get('user_name', '')
         user['user_pass'] = request.form.get('user_pass', '')
         user['email'] = request.form.get('email', '')
 
-    cur = db.execute("SELECT count(*) as cnt FROM users WHERE name=?;", (user['user_name'],))
-    record = cur.fetchone()
-    is_user_name_unique = (record['cnt'] == 0)
+        print(user)
 
-    cur = db.execute("SELECT count(*) as cnt FROM users WHERE email=?;", (user['email'],))
-    record = cur.fetchone()
-    is_user_email_unique = (record['cnt'] == 0)
+        cur = db.execute("SELECT count(*) as cnt FROM users WHERE name=?;", (user['user_name'],))
+        record = cur.fetchone()
+        is_user_name_unique = (record['cnt'] == 0)
 
-    if user['user_name'] == "":
-        message = "Name cannot be empty"
-    elif user['email'] == "":
-        message = "Email cannot be empty"
-    elif user['user_pass'] == "":
-        message = "Password cannot be empty"
-    elif not is_user_name_unique:
-        message = f"User with the name {user['user_name']} already exists"
-    elif not is_user_email_unique:
-        message = f"User with the email {user['email']} already exists"
+        cur = db.execute("SELECT count(*) as cnt FROM users WHERE email=?;", (user['email'],))
+        record = cur.fetchone()
+        is_user_email_unique = (record['cnt'] == 0)
 
-    if not message:
-        user_pass = UserPass(user["user_name"], user['user_pass'])
-        password_hash = user_pass.hash_password(user['user_pass'])
-        sql_statement = """
-        INSERT INTO users (name, email, password, is_active, is_admin)
-        VALUES(?,?,?,True,False);
-        """
+        if user['user_name'] == "":
+            message = "Name cannot be empty"
+        elif user['email'] == "":
+            message = "Email cannot be empty"
+        elif user['user_pass'] == "":
+            message = "Password cannot be empty"
+        elif not is_user_name_unique:
+            message = f"User with the name {user['user_name']} already exists"
+        elif not is_user_email_unique:
+            message = f"User with the email {user['email']} already exists"
 
-        db.execute(sql_statement, (user['user_name'], user['email'], password_hash))
-        db.commit()
-        flash(f"User {user['user_name']} created")
-        return redirect(url_for('users'))
+        if not message:
+            user_pass = UserPass(user["user_name"], user['user_pass'])
+            password_hash = user_pass.hash_password(user['user_pass'])
+            sql_statement = """
+            INSERT INTO users (name, email, password, is_active, is_admin)
+            VALUES(?,?,?,True,False);
+            """
+
+            db.execute(sql_statement, (user['user_name'], user['email'], password_hash))
+            db.commit()
+
+            flash(f"User {user['user_name']} created")
+            return redirect(url_for('users'))
+        else:
+            flash(f"Correct error: {message}")
+            return render_template("new_user.html", user=user)
 
 
 if __name__ == '__main__':
