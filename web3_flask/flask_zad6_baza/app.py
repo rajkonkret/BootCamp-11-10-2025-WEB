@@ -334,6 +334,14 @@ def login():
             flash("Login failed, try again")
             return render_template('login.html', login=login)
 
+@app.route('/logout')
+def logout():
+    if 'user' in session:
+        session.pop('user', None)
+        flash("You are logget out")
+
+    return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
