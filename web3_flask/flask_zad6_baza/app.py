@@ -382,8 +382,13 @@ def logout():
 
 @app.route('/users')
 def users():
-    return "not implemented"
+    # return "not implemented"
+    db = get_db()
+    sql_command = "SELECT id, name, email, is_admin, is_active FROM users;"
+    cur = db.execute(sql_command)
+    users = cur.fetchall()
 
+    return render_template('users.html', users=users)
 
 @app.route('/edit_user/<user_name>', methods=['GET', 'POST'])
 def edit_user(user_name):
