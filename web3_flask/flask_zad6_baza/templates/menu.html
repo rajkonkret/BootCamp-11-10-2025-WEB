@@ -12,21 +12,21 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+          <a class="nav-link   {{ 'active' if active_menu=='home' }}" aria-current="page" href="{{ url_for('index') }}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('create_offer') }}">Create Offer</a>
+          <a class="nav-link   {{ 'active' if active_menu=='create_offer' }}" href="{{ url_for('create_offer') }}">Create Offer</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('history') }}">History</a>
+          <a class="nav-link   {{ 'active' if active_menu=='history' }}" href="{{ url_for('history') }}">History</a>
         </li>
            <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          <a class="nav-link   {{ 'active' if active_menu=='login' }}" href="{{ url_for('login') }}">Login</a>
         </li>
            {% if login.is_valid %}
           </li>
            <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('logout') }}">
+          <a class="nav-link   {{ 'active' if active_menu=='logout' }}" href="{{ url_for('logout') }}">
               Logout {{ session['user'] if 'user' in session }}
           </a>
         </li>
@@ -34,7 +34,7 @@
 
          {% if login.is_valid and login.is_admin %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link  {{ 'active' if active_menu=='users' }} dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Users
           </a>
           <ul class="dropdown-menu">

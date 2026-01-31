@@ -77,7 +77,7 @@ class CarBrandsOffer:
 def index():
     login = UserPass(session.get('user'))
     login.get_user_info()
-    return render_template('index.html', login=login)
+    return render_template('index.html', login=login, active_menu="home")
 
 
 # http://127.0.0.1:5000/offer/audi/1000
@@ -94,7 +94,8 @@ def offer(brand, price):
         "exchange_offer.html",
         brand=brand,
         price=price,
-        login=login
+        login=login,
+        active_menu="history"
     )
 
 
@@ -113,7 +114,10 @@ def create_offer():
     if request.method == 'GET':
 
         # return render_template('create_offer.html')
-        return render_template('create_offer.html', offer=offer, login=login)
+        return render_template('create_offer.html',
+                               offer=offer,
+                               login=login,
+                               active_menu="create_offer")
     else:
         print("Jestem w create_offer")
         flash("Debug: starting process in POST mode")
@@ -161,7 +165,7 @@ def history():
     cur = db.execute(sql_command)
     offers = cur.fetchall()
 
-    return render_template("history.html", offers=offers, login=login)
+    return render_template("history.html", offers=offers, login=login, active_menu="history")
 
 
 @app.route("/edit_offer/<int:offer_id>", methods=['GET', 'POST'])
@@ -189,7 +193,8 @@ def edit_offer(offer_id):
             return render_template("edit_offer.html",
                                    offer=offer,
                                    spinner=spinner,
-                                   login=login)
+                                   login=login,
+                                   active_menu="history")
     else:
         flash("Debug: starting process in POST mode")
         brand = request.form.get("brand", "BMW")
@@ -271,7 +276,8 @@ def view_offer(offer_id):
         return render_template('view_offer_details.html',
                                offer_data=offer,
                                spinner=spinner,
-                               login=login)
+                               login=login,
+                               active_menu="history")
 
 
 # ======= LOGIN ======
@@ -357,7 +363,7 @@ def login():
     login.get_user_info()
 
     if request.method == "GET":
-        return render_template('login.html', login=login)
+        return render_template('login.html', login=login, active_menu="login")
     else:
         user_name = request.form.get('user_name', '')
         user_pass = request.form.get('user_pass', '')
@@ -373,7 +379,7 @@ def login():
             return redirect(url_for('index'))
         else:
             flash("Login failed, try again")
-            return render_template('login.html', login=login)
+            return render_template('login.html', login=login, active_menu="login")
 
 
 @app.route('/logout')
@@ -399,7 +405,7 @@ def users():
     cur = db.execute(sql_command)
     users = cur.fetchall()
 
-    return render_template('users.html', users=users, login=login)
+    return render_template('users.html', users=users, login=login, active_menu="users")
 
 
 @app.route('/edit_user/<user_name>', methods=['GET', 'POST'])
@@ -408,7 +414,7 @@ def edit_user(user_name):
     # sprawdzanie czy user jest zalogowany
     login = UserPass(session.get('user'))
     login.get_user_info()
-    if not login.is_validor or not login.is_admin:
+    if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
     db = get_db()
@@ -428,7 +434,8 @@ def edit_user(user_name):
         return render_template("edit_user.html",
                                user=user_record,
                                spinner=spinner,
-                               login=login)
+                               login=login,
+                               active_menu="users")
     else:
         # return "not implemented"
         # user_name, email, user_pass
@@ -503,7 +510,7 @@ def new_user():
     user = {}  # słownik
 
     if request.method == 'GET':
-        return render_template('new_user.html', user=user, login=login)
+        return render_template('new_user.html', user=user, login=login, active_menu="users")
     else:
         # return "not implemented"
         # user_name, email, user_pass
@@ -548,7 +555,7 @@ def new_user():
             return redirect(url_for('users'))
         else:
             flash(f"Correct error: {message}")
-            return render_template("new_user.html", user=user, login=login)
+            return render_template("new_user.html", user=user, login=login, active_menu="users")
 
 
 @app.route("/user_status_change/<action>/<user_name>")
