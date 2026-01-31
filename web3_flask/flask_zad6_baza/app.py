@@ -274,10 +274,14 @@ class UserPass:
 
     def login_user(self):
         db = get_db()
+        print(self.user, self.password)
 
         sql_statement = 'SELECT id, name, password, is_active, is_admin FROM users WHERE name=?'
         cur = db.execute(sql_statement, (self.user,))
         user_record = cur.fetchone()
+        print(user_record)
+
+        print(user_record['password'], self.password)
 
         if user_record is not None and self.verify_password(user_record['password'], self.password):
             return user_record
@@ -317,7 +321,9 @@ def login():
         user_name = request.form.get('user_name', '')
         user_pass = request.form.get('user_pass', '')
 
-        login = UserPass(user_pass, user_name)
+        print(user_name, user_pass)
+
+        login = UserPass(user_name, user_pass)
         login_record = login.login_user()
 
         if login_record is not None:

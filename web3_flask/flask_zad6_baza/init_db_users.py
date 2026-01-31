@@ -1,5 +1,7 @@
 import sqlite3
 
+import bcrypt
+
 SCHEMA_PATH = "data/schema.sql"
 DB_PATH = "data/car_ads_portal.db"
 
@@ -33,10 +35,14 @@ def create_start_user():
         INSERT INTO users (name, email, password, is_active, is_admin)
         VALUES (?,?,?,?,?);
         """
-        cur.execute(insert, ('admin', 'admin@caradsportal.pl', 'admin123', 1, 1))
+        password = "admin123"
+        password_hash = (bcrypt.hashpw(password.encode('utf-8'),
+                                       bcrypt.gensalt())
+                         .decode('utf-8'))
+
+        cur.execute(insert, ('admin1', 'admin1@caradsportal.pl', password_hash, 1, 1))
         conn.commit()
         print("Użytkownik admin dodany, hasło admin123")
-
 
     except sqlite3.Error as e:
         print("Bład:", e)
