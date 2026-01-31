@@ -122,12 +122,14 @@ def create_offer():
         # return redirect(
         #     url_for("offer", brand=brand, price=int(price))
         # )
-        return render_template(
-            "exchange_offer.html",
-            brand=brand,
-            price=price,
-            offer_info=offer.get_by_code(brand)
-        )
+        # return render_template(
+        #     "exchange_offer.html",
+        #     brand=brand,
+        #     price=price,
+        #     offer_info=offer.get_by_code(brand)
+        # )
+
+        return redirect('history')
 
 
 @app.route("/history")
