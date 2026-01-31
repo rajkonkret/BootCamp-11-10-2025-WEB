@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import bcrypt
 
 #  pip install -r requirements.txt
 from flask import Flask, url_for, request, redirect, render_template, flash, g
@@ -230,6 +231,37 @@ def view_offer(offer_id):
         return render_template('view_offer_details.html',
                                offer_data=offer,
                                spinner=spinner)
+
+
+# ======= LOGIN ======
+class UserPass:
+
+    def __init__(self, user="", password=""):
+        self.user = user
+        self.password = password
+        self.email = ""
+        self.is_valid = False
+        self.is_admin = False
+
+    # bcrypt -> scrypt
+    # argon2id
+    @staticmethod
+    def hash_password():
+        """
+        Hashuje hasłą używając
+        :return:
+        """
+
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    login = None
+
+    if request.method == "GET":
+        return render_template('login.html', login=login)
+    else:
+        pass
 
 
 if __name__ == '__main__':
