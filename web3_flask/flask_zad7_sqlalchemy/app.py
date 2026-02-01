@@ -238,16 +238,21 @@ def edit_offer(offer_id):
         else:
             flash(f"Request to process: {brand} was accepted")
 
-        db = get_db()
-        sql_commnd = """
-        UPDATE offers SET
-        brand=?,
-        price=?,
-        user=?
-        WHERE id=?;
-        """
-        db.execute(sql_commnd, (brand, price, 'admin', offer_id))
-        db.commit()
+        # db = get_db()
+        # sql_commnd = """
+        # UPDATE offers SET
+        # brand=?,
+        # price=?,
+        # user=?
+        # WHERE id=?;
+        # """
+        # db.execute(sql_commnd, (brand, price, 'admin', offer_id))
+        # db.commit()
+        offer = Offer.query.filter(Offer.id == offer_id)
+        offer.brand = brand
+        offer.price = price
+        offer.user = 'admin'
+        db.session.commit()
 
         # return f"<h1>You selected: {brand} price: {price}"
         # przekierowujemy aplikację do endpointa
@@ -268,10 +273,13 @@ def delete_offer(offer_id):
     if not login.is_valid:
         return redirect(url_for('login'))
 
-    db = get_db()
-    sql_command = "DELETE FROM offers WHERE id=?"
-    db.execute(sql_command, (offer_id,))
-    db.commit()
+    # db = get_db()
+    # sql_command = "DELETE FROM offers WHERE id=?"
+    # db.execute(sql_command, (offer_id,))
+    # db.commit()
+    del_tran = Offer.query.filter(Offer.id == offer_id)
+    db.session.delete(del_tran)
+    db.session.commit()
 
     return redirect(url_for('history'))
 
@@ -292,11 +300,12 @@ def view_offer(offer_id):
     spinner = CarBrandsOffer()
     spinner.load_offer()
 
-    db = get_db()
+    # db = get_db()
 
-    sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
-    cur = db.execute(sql_command, (offer_id,))
-    offer = cur.fetchone()  # pobranie jednego rekordu
+    # sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
+    # cur = db.execute(sql_command, (offer_id,))
+    # offer = cur.fetchone()  # pobranie jednego rekordu
+    offer = Offer.query.filter(Offer.id == offer_id).first()
     print(offer)
 
     if offer is None:
@@ -445,10 +454,11 @@ def users():
     if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
-    db = get_db()
-    sql_command = "SELECT id, name, email, is_admin, is_active FROM users;"
-    cur = db.execute(sql_command)
-    users = cur.fetchall()
+    # db = get_db()
+    # sql_command = "SELECT id, name, email, is_admin, is_active FROM users;"
+    # cur = db.execute(sql_command)
+    # users = cur.fetchall()
+    users = User.query.all()
 
     return render_template('users.html', users=users, login=login, active_menu="users")
 
