@@ -342,17 +342,19 @@ class UserPass:
         )
 
     def login_user(self):
-        db = get_db()
-        print(self.user, self.password)
-
-        sql_statement = 'SELECT id, name, password, is_active, is_admin FROM users WHERE name=?'
-        cur = db.execute(sql_statement, (self.user,))
-        user_record = cur.fetchone()
+        # db = get_db()
+        # print(self.user, self.password)
+        #
+        # sql_statement = 'SELECT id, name, password, is_active, is_admin FROM users WHERE name=?'
+        # cur = db.execute(sql_statement, (self.user,))
+        # user_record = cur.fetchone()
+        user_record = User.query.filter(User.name == self.user).first()
         print(user_record)
 
-        print(user_record['password'], self.password)
+        # print(user_record['password'], self.password)
 
-        if user_record is not None and self.verify_password(user_record['password'], self.password):
+        # if user_record is not None and self.verify_password(user_record['password'], self.password):
+        if user_record is not None and self.verify_password(user_record.password, self.password):
             return user_record
         else:
             self.user = None
@@ -360,23 +362,36 @@ class UserPass:
             return None
 
     def get_user_info(self):
-        db = get_db()
-        sql_statement = 'SELECT name, email, is_active, is_admin FROM users WHERE name=?'
-        cur = db.execute(sql_statement, (self.user,))
-        db_user = cur.fetchone()
+        # db = get_db()
+        # sql_statement = 'SELECT name, email, is_active, is_admin FROM users WHERE name=?'
+        # cur = db.execute(sql_statement, (self.user,))
+        # db_user = cur.fetchone()
+        db_user = User.query.filter(User.name == self.user)
 
+        # if db_user is None:
+        #     self.is_valid = False
+        #     self.is_admin = False
+        #     self.email = ''
+        # elif db_user['is_active'] != 1:
+        #     self.is_admin = False
+        #     self.is_valid = False
+        #     self.email = db_user['email']
+        # else:
+        #     self.is_valid = True
+        #     self.is_admin = db_user['is_admin']
+        #     self.email = db_user['email']
         if db_user is None:
             self.is_valid = False
             self.is_admin = False
             self.email = ''
-        elif db_user['is_active'] != 1:
+        elif db_user.is_active != 1:
             self.is_admin = False
             self.is_valid = False
-            self.email = db_user['email']
+            self.email = db_user.email
         else:
             self.is_valid = True
-            self.is_admin = db_user['is_admin']
-            self.email = db_user['email']
+            self.is_admin = db_user.is_admin
+            self.email = db_user.email
 
 
 @app.route("/login", methods=['GET', 'POST'])
