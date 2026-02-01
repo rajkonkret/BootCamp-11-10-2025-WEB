@@ -205,14 +205,15 @@ def edit_offer(offer_id):
     if not login.is_valid:
         return redirect(url_for('login'))
 
-    db = get_db()
+    # db = get_db()
     spinner = CarBrandsOffer()
     spinner.load_offer()
 
     if request.method == "GET":
-        sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
-        cur = db.execute(sql_command, (offer_id,))
-        offer = cur.fetchone()  # pobranie jednego rekordu
+        # sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
+        # cur = db.execute(sql_command, (offer_id,))
+        # offer = cur.fetchone()  # pobranie jednego rekordu
+        offer = Offer.query.filter(Offer.id == offer_id).first()
         print(offer)
 
         if offer == None:
