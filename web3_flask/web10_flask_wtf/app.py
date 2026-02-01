@@ -41,10 +41,12 @@ class Loginform(FlaskForm):
     password = PasswordField("Password")
     remember = BooleanField('Remember me')
 
+
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = url_for(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url
+
 
 def get_hashed_password(password):
     """
@@ -56,6 +58,7 @@ def get_hashed_password(password):
         password.encode('utf-8'),
         bcrypt.gensalt())
             .decode('utf-8'))
+
 
 def verify_password(stored_password, provided_password):
     """
@@ -69,3 +72,8 @@ def verify_password(stored_password, provided_password):
         provided_password.encode('utf-8'),
         stored_password.encode('utf-8')
     )
+
+
+@app.route("/")
+def index():
+    return "<h1>Hello!</h1>"
