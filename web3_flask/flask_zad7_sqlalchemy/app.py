@@ -1,5 +1,3 @@
-import os
-import sqlite3
 import bcrypt
 
 #  pip install -r requirements.txt
@@ -501,16 +499,23 @@ def edit_user(user_name):
         new_email = request.form.get('email', '')
 
         if new_email != user_record['email']:
-            sql_statement = "UPDATE users SET email=? WHERE name=?;"
-            db.execute(sql_statement, (new_email, user_name))
-            db.commit()
+            # sql_statement = "UPDATE users SET email=? WHERE name=?;"
+            # db.execute(sql_statement, (new_email, user_name))
+            # db.commit()
+            user_record.email = new_email
+            db.session.commit()
+
             flash("Email was changed")
 
         if new_password != "":
             user_pass = UserPass(user_name, new_name)
-            sql_statement = "UPDATE users SET password=? WHERE name=?;"
-            db.execute(sql_statement, (user_pass.hash_password(new_password), user_name))
-            db.commit()
+            # sql_statement = "UPDATE users SET password=? WHERE name=?;"
+            # db.execute(sql_statement, (user_pass.hash_password(new_password), user_name))
+            # db.commit()
+
+            user_record.password = user_pass.hash_password(new_password)
+            db.session.commit()
+
             flash("Password was changed")
 
         return redirect(url_for('users'))
@@ -651,7 +656,7 @@ def user_status_change(action, user_name):
         # db.commit()
         user = User.query.filter(User.name == user_name, User.name != login.user).first()
         if user:
-            user.is_active =(user.is_active + 1) %2
+            user.is_active = (user.is_active + 1) % 2
             db.session.commit()
     elif action == "admin":
         # db.execute("""
