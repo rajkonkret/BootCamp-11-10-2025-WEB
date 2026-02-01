@@ -35,6 +35,7 @@ db = SQLAlchemy(app)
 
 # klasa Offer
 class Offer(db.Model):
+    __tablename__ = 'offers'
     id = db.Column(db.Integer, primary_key=True)
     brand = db.Column(db.Text)
     price = db.Column(db.Integer)
@@ -42,6 +43,7 @@ class Offer(db.Model):
 
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
@@ -381,7 +383,8 @@ class UserPass:
         # sql_statement = 'SELECT name, email, is_active, is_admin FROM users WHERE name=?'
         # cur = db.execute(sql_statement, (self.user,))
         # db_user = cur.fetchone()
-        db_user = User.query.filter(User.name == self.user)
+        db_user = User.query.filter(User.name == self.user).first()
+        print(db_user)
 
         # if db_user is None:
         #     self.is_valid = False
