@@ -1,4 +1,5 @@
 import os
+from threading import Thread
 
 from flask import Flask, render_template
 from dotenv import load_dotenv
@@ -44,7 +45,12 @@ def send_mail(to, subject, template, **kwargs):
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
 
-    mail.send(msg)
+    # mail.send(msg)
+    # robimy wysłąnie maila na osobny wątku by nie blokowac aplikacji
+    thr = Thread(target=send_async_mail, args=[app, msg])
+    thr.start()
+
+    return thr
 
 
 if __name__ == '__main__':
