@@ -23,3 +23,11 @@ def create():
         return redirect(url_for("offer.history"))
 
     return render_template('create_offer.html')
+
+
+@offer_bp.route("/delete_offer/<int:offer_id", method=["POST"])
+def delete_offer(offer_id):
+    offer = get_by_id(offer_id)
+    if offer:
+        delete(offer)
+    return redirect(url_for("offer.history"))
