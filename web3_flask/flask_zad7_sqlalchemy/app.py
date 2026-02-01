@@ -472,13 +472,14 @@ def edit_user(user_name):
     if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
-    db = get_db()
+    # db = get_db()
     spinner = CarBrandsOffer()
     spinner.load_offer()
 
-    sql_command = "SELECT id, name, email, is_active, is_admin FROM users WHERE name=?"
-    cur = db.execute(sql_command, (user_name,))
-    user_record = cur.fetchone()  # pobranie jednego rekordu
+    # sql_command = "SELECT id, name, email, is_active, is_admin FROM users WHERE name=?"
+    # cur = db.execute(sql_command, (user_name,))
+    # user_record = cur.fetchone()  # pobranie jednego rekordu
+    user_record = User.query.filter(User.name == user_name).first()
     print(user_record)
 
     if offer is None:
@@ -542,10 +543,15 @@ def delete_user(user_name):
     if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
-    db = get_db()
-    sql_command = "DELETE FROM users WHERE name=?"
-    db.execute(sql_command, (user_name,))
-    db.commit()
+    # db = get_db()
+    # sql_command = "DELETE FROM users WHERE name=?"
+    # db.execute(sql_command, (user_name,))
+    # db.commit()
+    user = User.query.filter(User.name == user_name).first()
+    if user:
+        flash(f"User {user_name} has been removed")
+        db.session.delete(user)
+        db.session.commit()
 
     return redirect(url_for('users'))
 
@@ -560,7 +566,7 @@ def new_user():
     if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
-    db = get_db()
+    # db = get_db()
     message = None
     user = {}  # słownik
 
@@ -576,13 +582,15 @@ def new_user():
 
         print(user)
 
-        cur = db.execute("SELECT count(*) as cnt FROM users WHERE name=?;", (user['user_name'],))
-        record = cur.fetchone()
-        is_user_name_unique = (record['cnt'] == 0)
+        # cur = db.execute("SELECT count(*) as cnt FROM users WHERE name=?;", (user['user_name'],))
+        # record = cur.fetchone()
+        # is_user_name_unique = (record['cnt'] == 0)
+        is_user_name_unique = (User.query.filter(User.name == user['user_name']).count() == 0)
 
-        cur = db.execute("SELECT count(*) as cnt FROM users WHERE email=?;", (user['email'],))
-        record = cur.fetchone()
-        is_user_email_unique = (record['cnt'] == 0)
+        # cur = db.execute("SELECT count(*) as cnt FROM users WHERE email=?;", (user['email'],))
+        # record = cur.fetchone()
+        # is_user_email_unique = (record['cnt'] == 0)
+        is_user_email_unique = (User.query.filter(User.email == user['email']).count() == 0)
 
         if user['user_name'] == "":
             message = "Name cannot be empty"
@@ -598,13 +606,22 @@ def new_user():
         if not message:
             user_pass = UserPass(user["user_name"], user['user_pass'])
             password_hash = user_pass.hash_password(user['user_pass'])
-            sql_statement = """
-            INSERT INTO users (name, email, password, is_active, is_admin)
-            VALUES(?,?,?,True,False);
-            """
-
-            db.execute(sql_statement, (user['user_name'], user['email'], password_hash))
-            db.commit()
+            # sql_statement = """
+            # INSERT INTO users (name, email, password, is_active, is_admin)
+            # VALUES(?,?,?,True,False);
+            # """
+            #
+            # db.execute(sql_statement, (user['user_name'], user['email'], password_hash))
+            # db.commit()
+            new_user = User(
+                name=user['user_name'],
+                email=user['email'],
+                password=password_hash,
+                is_active=True,
+                is_admin=False
+            )
+            db.session.add(new_user)
+            db.session.commit()
 
             flash(f"User {user['user_name']} created")
             return redirect(url_for('users'))
@@ -624,20 +641,28 @@ def user_status_change(action, user_name):
     if not login.is_valid or not login.is_admin:
         return redirect(url_for('login'))
 
-    db = get_db()
+    # db = get_db()
 
     if action == "active":
-        db.execute("""
-        UPDATE users SET is_active = (is_active + 1) % 2
-        WHERE name=? and name <> ?;""",
-                   (user_name, login.user))
-        db.commit()
+        # db.execute("""
+        # UPDATE users SET is_active = (is_active + 1) % 2
+        # WHERE name=? and name <> ?;""",
+        #            (user_name, login.user))
+        # db.commit()
+        user = User.query.filter(User.name == user_name, User.name != login.user).first()
+        if user:
+            user.is_active =(user.is_active + 1) %2
+            db.session.commit()
     elif action == "admin":
-        db.execute("""
-               UPDATE users SET is_admin = (is_admin + 1) % 2
-               WHERE name=? and name <> ?;""",
-                   (user_name, login.user))
-        db.commit()
+        # db.execute("""
+        #        UPDATE users SET is_admin = (is_admin + 1) % 2
+        #        WHERE name=? and name <> ?;""",
+        #            (user_name, login.user))
+        # db.commit()
+        user = User.query.filter(User.name == user_name, User.name != login.user).first()
+        if user:
+            user.is_admin = (user.is_admin + 1) % 2
+            db.session.commit()
 
     return redirect(url_for('users'))
 
