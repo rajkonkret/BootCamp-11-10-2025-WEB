@@ -127,5 +127,10 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route("/docs")
+def docs():
+    return f"<h1>You have acess to protected docs. You are {current_user.name}</h1>"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
