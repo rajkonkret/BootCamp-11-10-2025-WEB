@@ -185,12 +185,16 @@ def history():
     if not login.is_valid:
         return redirect(url_for('login'))
 
-    db = get_db()
-    sql_command = "SELECT id, brand, price FROM offers;"
-    cur = db.execute(sql_command)
-    offers = cur.fetchall()
+    # db = get_db()
+    # sql_command = "SELECT id, brand, price FROM offers;"
+    # cur = db.execute(sql_command)
+    # offers = cur.fetchall()
+    offers = Offer.query.all()
 
-    return render_template("history.html", offers=offers, login=login, active_menu="history")
+    return render_template("history.html",
+                           offers=offers,
+                           login=login,
+                           active_menu="history")
 
 
 @app.route("/edit_offer/<int:offer_id>", methods=['GET', 'POST'])
