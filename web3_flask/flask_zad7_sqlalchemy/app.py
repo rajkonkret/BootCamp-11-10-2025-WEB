@@ -213,7 +213,9 @@ def edit_offer(offer_id):
         # sql_command = "SELECT id, brand, price FROM offers WHERE id=?"
         # cur = db.execute(sql_command, (offer_id,))
         # offer = cur.fetchone()  # pobranie jednego rekordu
-        offer = Offer.query.filter(Offer.id == offer_id).first()
+
+        # offer = Offer.query.filter(Offer.id == offer_id).first()
+        offer = Offer.query.get(offer_id)  # Offer.id == offer_id
         print(offer)
 
         if offer == None:
@@ -555,7 +557,8 @@ def delete_user(user_name):
     # sql_command = "DELETE FROM users WHERE name=?"
     # db.execute(sql_command, (user_name,))
     # db.commit()
-    user = User.query.filter(User.name == user_name).first()
+    # user = User.query.filter(User.name == user_name).first()
+    user = User.query.filter_by(name=user_name).first()
     if user:
         flash(f"User {user_name} has been removed")
         db.session.delete(user)
