@@ -44,8 +44,11 @@ class Loginform(FlaskForm):
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
-    test_url = url_for(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+    test_url = urlparse(urljoin(request.host_url, target))
+    return (
+            test_url.scheme in ('http', 'https')
+            and ref_url.netloc == test_url.netloc
+    )
 
 
 def get_hashed_password(password):
