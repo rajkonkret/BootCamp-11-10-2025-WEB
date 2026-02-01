@@ -45,7 +45,7 @@ class Loginform(FlaskForm):
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = url_for(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
 def get_hashed_password(password):
@@ -128,8 +128,10 @@ def login():
 
 
 @app.route("/docs")
+@login_required  # zabezpieczamy endpoint, działa po zalogowaniu
 def docs():
-    return f"<h1>You have acess to protected docs. You are {current_user.name}</h1>"
+    return f"<h1>You have acess to protected docs.</h1>"
+    # return f"<h1>You have acess to protected docs. You are {current_user.name}</h1>"
 
 
 if __name__ == '__main__':
