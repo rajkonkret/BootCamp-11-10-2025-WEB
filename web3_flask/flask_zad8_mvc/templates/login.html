@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login - Car Ads Portal
+{% endblock %}
+
+{% block body_content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Login to Car Ads Portal</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('login') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="user_name" class="form-label">Username</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="user_name"
+                                   name="user_name"
+                                   placeholder="Enter username"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="user_pass" class="form-label">Password</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="user_pass"
+                                   name="user_pass"
+                                   placeholder="Enter password"
+                                   required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-muted">
+                    <small>Don't have an account? Contact administrator.</small>
+                </div>
+            </div>
+
+            {% if login.is_valid %}
+            <div class="alert alert-success mt-3" role="alert">
+                <strong>Welcome back!</strong> You are logged in as <strong>{{ login.user }}</strong>
+                {% if login.is_admin %}
+                <span class="badge bg-warning text-dark">Admin</span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
