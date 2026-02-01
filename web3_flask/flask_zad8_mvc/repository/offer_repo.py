@@ -1,4 +1,4 @@
-from flask_zad8_mvc.models import Offer, db
+from web3_flask.flask_zad8_mvc.models import Offer, db
 
 
 def get_all():
