@@ -152,12 +152,15 @@ def create_offer():
         elif offer.get_by_code(brand) == "unknown":
             flash("The selected brand is unknown and cannot be accepted")
         else:
-            flash(f"Request to process: {brand} was accepted")
+            # db = get_db()
+            # sql_commnd = "INSERT INTO offers(brand, price, user) VALUES (?,?,?)"
+            # db.execute(sql_commnd, (brand, price, 'admin'))
+            # db.commit()
+            new_offer = Offer(brand=brand, price=price, user='admin')
+            db.session.add(new_offer)
+            db.session.commit()
 
-        db = get_db()
-        sql_commnd = "INSERT INTO offers(brand, price, user) VALUES (?,?,?)"
-        db.execute(sql_commnd, (brand, price, 'admin'))
-        db.commit()
+            flash(f"Request to process: {brand} was accepted")
 
         # return f"<h1>You selected: {brand} price: {price}"
         # przekierowujemy aplikację do endpointa
