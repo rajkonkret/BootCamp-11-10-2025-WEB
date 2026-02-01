@@ -28,10 +28,10 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(30))
 
     def __repr__(self):
-        return f"User: {self.name}"
+        return f"<User {self.name}>"
 
 
-@login_manager.user_loader()
+@login_manager.user_loader
 def load_user(id):
     return User.query.filter(User.id == id).first()
 
@@ -77,3 +77,55 @@ def verify_password(stored_password, provided_password):
 @app.route("/")
 def index():
     return "<h1>Hello!</h1>"
+
+
+# 127.0.0.1:5000/init
+@app.route("/init")
+def init():
+    db.create_all()
+
+    admin = User.query.filter(User.name == 'admin').first()
+    if admin is None:
+        admin = User(
+            id=1,
+            name="admin",
+            password=get_hashed_password("Passw0rd"),
+            first_name="Radek",
+            last_name="Kowalski"
+        )
+
+        db.session.add(admin)
+        db.session.commit()
+        return "<h1>Initial configuration done!</h1>"
+    return None
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return "<h1>You are logged out</h1>"
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = Loginform()
+
+    # csrf
+    if form.validate_on_submit():
+        print(form.name.data, form.password.data)
+
+        user = User.query.filter(User.name == form.name.data).first()
+        if user is not None and verify_password(user.password, form.password.data):
+            login_user(user)
+
+            next = request.args.get('next')
+            if next and is_safe_url(next):
+                return redirect(next)
+            else:
+                return "<h1>You are authenticated!</h1>"
+
+    return render_template('login.html', form=form)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
