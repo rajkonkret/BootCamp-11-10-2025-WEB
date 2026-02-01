@@ -4,30 +4,44 @@ import bcrypt
 
 #  pip install -r requirements.txt
 from flask import Flask, url_for, request, redirect, render_template, flash, g, session
+from flask_sqlalchemy import SQLAlchemy
 
-app_info = {
-    'db_file': 'data/car_ads_portal.db'
-}
+# app_info = {
+#     'db_file': 'data/car_ads_portal.db'
+# }
 
 app = Flask(__name__)
 # dodajemy secret_key aby działały flash
-app.config['SECRET_KEY'] = "KluczTrudnyDoZlamania"
+# app.config['SECRET_KEY'] = "KluczTrudnyDoZlamania"
+app.config.from_pyfile('config.cfg')
+
+db = SQLAlchemy(app)
 
 
-# Singleton
-def get_db():
-    if not hasattr(g, 'sqlite_db'):
-        conn = sqlite3.connect(app_info['db_file'])
-        conn.row_factory = sqlite3.Row  # dostaniemy słownik
-        g.sqlite_db = conn
+# przy uzyciu flak-sqlalchemy nie jest to potrzebne
+# # Singleton
+# def get_db():
+#     if not hasattr(g, 'sqlite_db'):
+#         conn = sqlite3.connect(app_info['db_file'])
+#         conn.row_factory = sqlite3.Row  # dostaniemy słownik
+#         g.sqlite_db = conn
+#
+#     return g.sqlite_db
+#
+#
+# @app.teardown_appcontext
+# def close_db(error):
+#     if hasattr(g, 'sqlite_db'):
+#         g.sqlite_db.close()
+#
 
-    return g.sqlite_db
-
-
-@app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    password = db.Column(db.Text)
+    is_active = db.Column(db.Boolean())
+    is_admin = db.Column(db.Boolean())
 
 
 class CarBrand:
