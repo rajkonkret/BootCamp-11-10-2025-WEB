@@ -1,5 +1,5 @@
 from web3_flask.flask_zad8_mvc.repository import offer_repo
-from spinner import CarBrandsOffer
+from web3_flask.flask_zad8_mvc.services.spinner import CarBrandsOffer
 
 
 def create_offer(brand, price, user):

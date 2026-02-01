@@ -11,7 +11,7 @@ def history():
     return render_template('history.html', offers=offers)
 
 
-@offer_bp.route("create_offer", methods=['GET', "POST"])
+@offer_bp.route("/create_offer", methods=['GET', "POST"])
 def create():
     if request.method == "POST":
         brand = request.form.get("brand", '')
@@ -25,7 +25,7 @@ def create():
     return render_template('create_offer.html')
 
 
-@offer_bp.route("/delete_offer/<int:offer_id", method=["POST"])
+@offer_bp.route("/delete_offer/<int:offer_id>", methods=["POST"])
 def delete_offer(offer_id):
     offer = get_by_id(offer_id)
     if offer:
