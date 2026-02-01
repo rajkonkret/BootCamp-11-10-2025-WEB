@@ -35,6 +35,14 @@ db = SQLAlchemy(app)
 #         g.sqlite_db.close()
 #
 
+# klasa Offer
+class Offer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    brand = db.Column(db.Text)
+    price = db.Column(db.Integer)
+    user = db.Column(db.Text)
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
