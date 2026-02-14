@@ -147,6 +147,18 @@ def me(request: Request, access_token: str = Cookie(None)):
             "<h1>Błąd tokena</h1><a href='/'>Logowanie</a>", status_code=401
         )
 
+@app.get("/logout", response_class=HTMLResponse)
+def logout(request: Request):
+    return f"""
+            <html>
+            <head><title>Wylogowano</title></head>
+            <body>
+            <h1>Wylogowano!</h1>
+            <a href='/'>Powrót do strony głównej</a>
+            </body>
+            </html>
+            """
+
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
