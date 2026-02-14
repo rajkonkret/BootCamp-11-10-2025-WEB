@@ -16,3 +16,21 @@ gunicorn -b :5000 main:app - uruchommienie na porcie 5000
 │ ├── urls.py # Routing URL
 │ ├── asgi.py
 │ ├── wsgi.py
+
+python manage.py startapp myapp - utworzenie apliakcji django
+
+python manage.py migrate - migracja bazy
+
+http://127.0.0.1:8000/admin/ - panel admina
+python manage.py createsuperuser - tworzenie admina
+(.venv) radoslawjaniak@mac myproject % python manage.py createsuperuser
+Username (leave blank to use 'radoslawjaniak'): admin
+Email address: admin@admin.pl
+Password:
+Password (again):
+This password is too short. It must contain at least 8 characters.
+This password is too common.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+
+python manage.py makemigrations - po dodaniu tabel dla bazy (klas)
