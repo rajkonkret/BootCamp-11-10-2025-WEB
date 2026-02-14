@@ -125,11 +125,19 @@ def me(request: Request, access_token: str = Cookie(None)):
     try:
         payload = jwt.decode(access_token, JWT_SECRET, algorithms=[JWT_ALGO])
         user = payload.get("sub")
+        user_in_db = get_user(user)
+
+        is_new = False
+
+        if not user_in_db:
+            is_new = True
+
         return f"""
                 <html>
                 <head><title>Konto</title></head>
                 <body>
                 <h1>Zalogowana jako: {user}</h1>
+                <h2>Czy nowy? {is_new}</h2>
                 <a href='/logout'>Wyloguj się</a>
                 </body>
                 </html>
