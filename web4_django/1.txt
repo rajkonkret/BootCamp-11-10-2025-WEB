@@ -34,3 +34,5 @@ Bypass password validation and create user anyway? [y/N]: y
 Superuser created successfully.
 
 python manage.py makemigrations - po dodaniu tabel dla bazy (klas)
+
+python manage.py runserver - uruchamianie serwera
