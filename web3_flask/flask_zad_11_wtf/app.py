@@ -36,7 +36,7 @@ def load_user(id):
     return User.query.filter(User.id == id).first()
 
 
-class LoginForm(FlaskForm):
+class Loginform(FlaskForm):
     name = StringField("User name")
     password = PasswordField("Password")
     remember = BooleanField('Remember me')
@@ -111,7 +111,7 @@ def logout():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = Loginform()
 
     # csrf
     if form.validate_on_submit():
