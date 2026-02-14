@@ -40,3 +40,8 @@ python manage.py runserver - uruchamianie serwera
 # pododaniu tabel w bazie danych:
 python manage.py makemigrations
 python manage.py migrate
+
+python manage.py shell - uruchomienie pythona
+w konsoli pythona wpisujemy:
+    from myapp.models import Post
+    Post.objects.create(title="Pierwszy Post", content="To jest mój pierwszy wpis w bazie!")
