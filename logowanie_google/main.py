@@ -79,6 +79,12 @@ async def auth_callback(request: Request):
             }
         )
 
+        token_data = token_resp.json()  # słownik
+        print(token_data)
+
+        access_token = token_data.get("access_token")
+        print(access_token)
+
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
