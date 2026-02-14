@@ -29,9 +29,16 @@ def get_user(email):
     return user
 
 
-def add_user():
+def add_user(email):
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
 
-    conn.commit()
-    conn.close()
+    try:
+        c.execute("INSERT INTO users (email) VALUES (?)", (email,))
+        return True
+    except sqlite3.IntegrityError:  # bład, gdy user już był w bazie banych
+        return False
+    finally:
+        if conn:
+            conn.commit()
+            conn.close()
