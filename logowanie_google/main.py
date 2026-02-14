@@ -55,7 +55,29 @@ def login():
     )
 
     print(google_auth_url)
+    return RedirectResponse(google_auth_url)
 
+
+@app.get("/auth/callback")
+async def auth_callback(request: Request):
+    code = request.query_params.get("code")
+    if not code:
+        raise HTTPException(400, "Brak kodu OAuth2")
+
+    print(code)
+
+    # wymiana code na access_token
+    async with httpx.AsyncClient() as client:
+        token_resp = await client.post(
+            GOOGLE_TOKEN_URL,
+            data={
+                "clien_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "code": code,
+                "grant_type": "authorization_code",
+                "redirect_uri": REDIRECT_URI
+            }
+        )
 
 
 if __name__ == '__main__':
