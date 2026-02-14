@@ -36,3 +36,7 @@ Superuser created successfully.
 python manage.py makemigrations - po dodaniu tabel dla bazy (klas)
 
 python manage.py runserver - uruchamianie serwera
+
+# pododaniu tabel w bazie danych:
+python manage.py makemigrations
+python manage.py migrate
