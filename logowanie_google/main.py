@@ -71,7 +71,7 @@ async def auth_callback(request: Request):
         token_resp = await client.post(
             GOOGLE_TOKEN_URL,
             data={
-                "clien_id": CLIENT_ID,
+                "client_id": CLIENT_ID,
                 "client_secret": CLIENT_SECRET,
                 "code": code,
                 "grant_type": "authorization_code",
