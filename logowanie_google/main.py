@@ -9,3 +9,7 @@ import httpx
 from baza import init_db, get_user, add_user
 
 from jose import jwt, JWTError
+
+init_db()
+
+app = FastAPI()

@@ -8,7 +8,7 @@ def init_db():
     c.execute("""
     CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE
+    email TEXT UNIQUE)
     """)
 
     conn.commit()
