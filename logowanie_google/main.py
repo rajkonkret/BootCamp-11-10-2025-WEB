@@ -100,6 +100,9 @@ async def auth_callback(request: Request):
         if not email:
             raise HTTPException(400, "Brak e-mail w Google")
 
+        token = jwt.encode({"sub": email}, JWT_SECRET, algorithm=JWT_ALGO)
+        return {"access_token": token, "user": userinfo}
+
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
