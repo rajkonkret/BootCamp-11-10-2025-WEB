@@ -1,0 +1,7 @@
+pip install Django==5.2.5 - instalacja wskazanej wersji Django
+python -m django --version - sprawdzenie wersji
+django-admin --version
+
+django-admin startproject myproject - tworzenie projektu django
+
+cd myproject
