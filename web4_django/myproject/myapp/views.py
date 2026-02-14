@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import Post
 
@@ -34,3 +34,16 @@ def list_posts(request):
         "myapp/posts.html",
         {"posts": posts}
     )
+
+
+def get_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    data = {
+        "id": post.id,
+        "title": post.title,
+        "content": post.content,
+        "created_at": post.created_at,
+    }
+
+    return JsonResponse(data, safe=False)
