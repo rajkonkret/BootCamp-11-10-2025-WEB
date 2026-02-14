@@ -90,11 +90,16 @@ async def auth_callback(request: Request):
 
         userinfo_resp = await client.get(
             GOOGLE_USERINFO_URL,
-            headers={"Authorization", f"Bearer {access_token}"}
+            headers={"Authorization": f"Bearer {access_token}"}
         )
 
         userinfo = userinfo_resp.json()
         print(userinfo)
+
+        email = userinfo.get("email")
+        if not email:
+            raise HTTPException(400, "Brak e-mail w Google")
+
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
