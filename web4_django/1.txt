@@ -45,3 +45,8 @@ python manage.py shell - uruchomienie pythona
 w konsoli pythona wpisujemy:
     from myapp.models import Post
     Post.objects.create(title="Pierwszy Post", content="To jest mój pierwszy wpis w bazie!")
+
+http://127.0.0.1:8000/admin
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/posts
+http://127.0.0.1:8000/posts/1/
