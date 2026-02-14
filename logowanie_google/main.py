@@ -85,6 +85,16 @@ async def auth_callback(request: Request):
         access_token = token_data.get("access_token")
         print(access_token)
 
+        if not access_token:
+            raise HTTPException(400, "Brak access token")
+
+        userinfo_resp = await client.get(
+            GOOGLE_USERINFO_URL,
+            headers={"Authorization", f"Bearer {access_token}"}
+        )
+
+        userinfo = userinfo_resp.json()
+        print(userinfo)
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
