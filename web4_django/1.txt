@@ -5,3 +5,14 @@ django-admin --version
 django-admin startproject myproject - tworzenie projektu django
 
 cd myproject
+python manage.py runserver - uruchomienie projektu djangowego
+gunicorn, uwsgi, uvicorn
+gunicorn -b :5000 main:app - uruchommienie na porcie 5000
+
+├── manage.py ├── myproject/ # Główny plik zarządzania projektem
+# Folder aplikacji głównej
+│ ├── __init__.py
+│ ├── settings.py # Główna konfiguracja Django
+│ ├── urls.py # Routing URL
+│ ├── asgi.py
+│ ├── wsgi.py
