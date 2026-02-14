@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI, Request, Depends, HTTPException, Cookie
 from fastapi.responses import RedirectResponse
 from fastapi.responses import HTMLResponse
@@ -27,3 +28,35 @@ print(BACK_URI)
 
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return """
+        <html>
+        <head><title>Moja Apka</title></head>
+        <body>
+        <h1>Witaj!</h1>
+        <a href='/login'>Zaloguj się przez Google</a>
+        </body>
+        </html>
+        """
+
+
+@app.get("/login")
+def login():
+    google_auth_url = (
+        "https://accounts.google.com/o/oauth2/v2/auth"
+        "?response_type=code"
+        f"&client_id={CLIENT_ID}"
+        f"&redirect_uri={REDIRECT_URI}"
+        "&scope=openid%20email%20profile"
+        "&access_type=offline"
+    )
+
+    print(google_auth_url)
+
+
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
