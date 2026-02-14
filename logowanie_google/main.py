@@ -103,12 +103,21 @@ async def auth_callback(request: Request):
         token = jwt.encode({"sub": email}, JWT_SECRET, algorithm=JWT_ALGO)
         return {"access_token": token, "user": userinfo}
 
+
 @app.get("/me", response_class=HTMLResponse)
 def me(request, Request, access_token: str = Cookie(None)):
     if not access_token:
         return HTMLResponse(
-            "<h2>Brak tokena - nie jesteś zalogowany.</h2><h2><a href='/'>Logowanie</a>", status_code=401)
+            "<h2>Brak tokena - nie jesteś zalogowany.</h2><h2><a href='/'>Logowanie</a>", status_code=401
         )
+
+    try:
+        pass
+    except JWTError:
+        return HTMLResponse(
+            "<h1>Błąd tokena</h1><a href='/'>Logowanie</a>", status_code=401
+        )
+
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
