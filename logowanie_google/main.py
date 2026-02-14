@@ -112,7 +112,17 @@ def me(request, Request, access_token: str = Cookie(None)):
         )
 
     try:
-        pass
+        payload = jwt.decode(access_token, JWT_SECRET, algorithms=[JWT_ALGO])
+        user = payload.get("sub")
+        return f"""
+                <html>
+                <head><title>Konto</title></head>
+                <body>
+                <h1>Zalogowana jako: {user}</h1>
+                <a href='/logout'>Wyloguj się</a>
+                </body>
+                </html>
+                """
     except JWTError:
         return HTMLResponse(
             "<h1>Błąd tokena</h1><a href='/'>Logowanie</a>", status_code=401
