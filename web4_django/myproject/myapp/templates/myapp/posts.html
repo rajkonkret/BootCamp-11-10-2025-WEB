@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>lista postów</title>
+</head>
+<body>
+    <h1>Posty</h1>
+    {% for post in posts %}
+        <div>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content }}</p>
+            <small>{{ post.created_at }}</small>
+            <hr>
+        </div>
+    {% empty %}
+        <p>Brak postów</p>
+    {% endfor %}
+</body>
+</html>
